@@ -3,69 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Khan Apps</title>
+<title>Scientific Calculator | Khan Apps</title>
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f7fb;
-  color: #222;
-  text-align: center;
-}
-header {
-  background: #102b55;
-  color: white;
-  padding: 25px;
-}
-.profile {
-  width: 125px;
-  height: 125px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 20px;
-  border: 3px solid #168cff;
-}
-.card {
-  background: white;
-  max-width: 400px;
-  margin: 20px auto;
-  padding: 22px;
-  border-radius: 15px;
-  box-shadow: 0 3px 12px #ddd;
-}
-a {
-  display: inline-block;
-  background: #0867e9;
-  color: white;
-  padding: 12px 22px;
-  border-radius: 8px;
-  text-decoration: none;
-}
-footer {
-  padding: 25px;
-  color: #666;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#101a35;color:white;font-family:Arial,sans-serif;padding:15px}
+h1{text-align:center;color:#ffd45c}
+.tabs{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin:20px 0}
+.tabs button,.keys button{border:0;border-radius:8px;padding:12px;background:#24365e;color:white}
+.tabs button.active{background:#e5ad35;color:#101a35}
+.panel{display:none;max-width:480px;margin:auto}
+.panel.active{display:block}
+.display{width:100%;padding:18px;font-size:24px;border:0;border-radius:10px;margin-bottom:12px;background:#fff;color:#111;text-align:right}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.keys button{font-size:17px;min-height:52px}
+.keys button.operator{background:#d99b24;color:#111}
+.keys button.equal{background:#168b66}
+.keys button.clear{background:#b63d50}
+.card{background:#1c2b4d;padding:16px;border-radius:12px;margin:12px 0}
+input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:0;font-size:16px}
+.action{background:#e5ad35;color:#111;border:0;padding:12px 18px;border-radius:8px;font-weight:bold}
+p{line-height:1.6;color:#d6deef}
 </style>
 </head>
 <body>
 
-<header>
-  <h1>⭐ KHAN APPS</h1>
-  <p>Your Apps, Your World</p>
-</header>
+<h1>⭐ KHAN APPS ⭐</h1>
+<p style="text-align:center">Scientific Calculator</p>
 
-<img class="profile" src="VEGA_1793598047116.jpg" alt="Profile Picture">
-
-<h2>Welcome to Khan Apps</h2>
-<p>Discover useful Android and Web Apps.</p>
-
-<div class="card">
-  <h2>🧮 Scientific Calculator</h2>
-  <p>Scientific calculations, averages and physics formulas.</p>
-  <a href="scientific-calculator.html">Open Calculator</a>
+<div class="tabs">
+<button class="active" onclick="showTab('calc',this)">Scientific</button>
+<button onclick="showTab('average',this)">Average</button>
+<button onclick="showTab('formulas',this)">Formulas</button>
+<button onclick="showTab('mine',this)">My Formulas</button>
 </div>
 
-<footer>⭐ Powered by Khan Apps ⭐</footer>
+<section id="calc" class="panel active">
+<input id="display" class="display" placeholder="0" readonly>
+<div class="keys">
+<button onclick="add('sin(')">sin</button>
+<button onclick="add('cos(')">cos</button>
+<button onclick="add('tan(')">tan</button>
+<button onclick="add('sqrt(')">√</button>
+<button onclick="add('log(')">log</button>
+<button onclick="add('ln(')">ln</button>
+<button onclick="add('(')">(</button>
+<button onclick="add(')')">)</button>
+<button onclick="add('pi')">π</button>
+<button onclick="add('e')">e</button>
+<button onclick="add('^')">xʸ</button>
+<button onclick="add('!')">x!</button>
+<button onclick="add('7')">7</button>
+<button onclick="add('8')">8</button>
+<button onclick="add('9')">9</button>
+<button class="operator" onclick="add('/')">÷</button>
+<button onclick="add('4')">4</button>
+<button onclick="add('5')">5</button>
+<button onclick="add('6')">6</button>
+<button class="operator" onclick="add('*')">×</button>
+<button onclick="add('1')">1</button>
+<button onclick="add('2')">2</button>
+<button onclick="add('3')">3</button>
+<button class="operator" onclick="add('-')">−</button>
+<button onclick="add('0')">0</button>
+<button onclick="add('.')">.</button>
+<button class="clear" onclick="clearDisplay()">AC</button>
+<button class="operator" onclick="add('+')">+</button>
+<button onclick="backspace()">⌫</button>
+<button onclick="add('%')">%</button>
+<button class="operator" onclick="toggleAngle()">DEG</button>
+<button class="equal" onclick="calculate()">=</button>
+</div>
+<p id="angle">Angle mode: DEG</p>
+</section>
 
+<section id="average" class="panel">
+<div class="card">
+<h2>Average Calculator</h2>
+<p>Enter numbers separated by commas.</p>
+<input id="numbers" placeholder="Example: 10, 20, 30">
+<button class="action" onclick="average()">Calculate Average</button>
+<h3 id="averageResult"></h3>
+</div>
+</section>
+
+<section id="formulas" class="panel">
+<div class="card">
+<h2>Math & Physics Formulas</h2>
+<p><b>Speed:</b> Distance ÷ Time</p>
+<p><b>Force:</b> Mass × Acceleration</p>
+<p><b>Work:</b> Force × Distance</p>
+<p><b>Density:</b> Mass ÷ Volume</p>
+<p><b>Area of circle:</b> π × r²</p>
+<p><b>Area of triangle:</b> ½ × Base × Height</p>
+<p><b>Ohm's Law:</b> Voltage = Current × Resistance</p>
+<p><b>Power:</b> Work ÷ Time</p>
+</div>
+</section>
+
+<section id="mine" class="panel">
+<div class="card">
+<h2>My Formulas</h2>
+<input id="formulaName" placeholder="Formula name">
+<input id="formulaText" placeholder="Write your formula">
+<button class="action" onclick="saveFormula()">Save Formula</button>
+<div id="savedFormulas"></div>
+</div>
+</section>
+
+<script>
+let degrees=true;
+
+function showTab(id,button){
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+ document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ button.classList.add('active');
+}
+
+function add(value){
+ document.getElementById('display').value+=value;
+}
+function clearDisplay(){
+ document.getElementById('display').value='';
+}
+function backspace(){
+ let d=document.getElementById('display');
+ d.value=d.value.slice(0,-1);
+}
+function toggleAngle(){
+ degrees=!degrees;
+ document.querySelector('.keys button:nth-child(32)').textContent=degrees?'DEG':'RAD';
+ document.getElementById('angle').textContent='Angle mode: '+(degrees?'DEG':'RAD');
+}
+function factorial(n){
+ if(n<0||!Number.isInteger(n)||n>170)throw Error();
+ let r=1;
+ for(let i=2;i<=n;i++)r*=i;
+ return r;
+}
+function calculate(){
+ let d=document.getElementById('display');
+ try{
+  let s=d.value.toLowerCase();
+  s=s.replace(/pi/g,'Math.PI').replace(/\be\b/g,'Math.E');
+  s=s.replace(/sqrt\(/g,'Math.sqrt(')
+     .replace(/log\(/g,'Math.log10(')
+     .replace(/ln\(/g,'Math.log(');
+  s=s.replace(/sin\(/g,'SIN(').replace(/cos\(/g,'COS(').replace(/tan\(/g,'TAN(');
+  s=s.replace(/(\d+)!/g,'factorial($1)');
+  s=s.replace(/\^/g,'**').replace(/(\d+(?:\.\d+)?)%/g,'($1/100)');
+  s=s.replace(/SIN\(/g,degrees?'Math.sin(Math.PI/180*(':'Math.sin(');
+  s=s.replace(/COS\(/g,degrees?'Math.cos(Math.PI/180*(':'Math.cos(');
+  s=s.replace(/TAN\(/g,degrees?'Math.tan(Math.PI/180*(':'Math.tan(');
+  if(!/^[0-9+\-*/().,\sA-Za-z_*]+$/.test(s))throw Error();
+  let result=Function('"use strict";return ('+s+')')();
+  if(!Number.isFinite(result))throw Error();
+  d.value=Number(result.toPrecision(12));
+ }catch(e){d.value='Error';}
+}
+function average(){
+ let values=document.getElementById('numbers').value.split(',').map(x=>Number(x.trim()));
+ if(!values.length||values.some(x=>!Number.isFinite(x))){
+  document.getElementById('averageResult').textContent='Please enter valid numbers.';
+  return;
+ }
+ let result=values.reduce((a,b)=>a+b,0)/values.length;
+ document.getElementById('averageResult').textContent='Average: '+result;
+}
+function saveFormula(){
+ let name=document.getElementById('formulaName').value.trim();
+ let formula=document.getElementById('formulaText').value.trim();
+ if(!name||!formula)return alert('Enter both name and formula.');
+ let list=JSON.parse(localStorage.getItem('myFormulas')||'[]');
+ list.push({name,formula});
+ localStorage.setItem('myFormulas',JSON.stringify(list));
+ document.getElementById('formulaName').value='';
+ document.getElementById('formulaText').value='';
+ showFormulas();
+}
+function showFormulas(){
+ let list=JSON.parse(localStorage.getItem('myFormulas')||'[]');
+ document.getElementById('savedFormulas').innerHTML='';
+ list.forEach((item,i)=>{
+  let p=document.createElement('p');
+  p.textContent=item.name+': '+item.formula;
+  document.getElementById('savedFormulas').appendChild(p);
+ });
+}
+showFormulas();
+</script>
 </body>
 </html>
