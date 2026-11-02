@@ -1,28 +1,29 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scientific Calculator | Khan Apps</title>
+<title>Khan Apps Calculator</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#050914;color:white;font-family:Arial,sans-serif;padding:12px}
-h1{text-align:center;color:#ffd52a;font-size:25px}
-p{color:#cbd5e1;line-height:1.5}
+body{margin:0;padding:12px;background:#050914;color:white;font-family:Arial}
+h1{text-align:center;color:#ffd52a;font-size:24px}
 .tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:15px 0}
-.tabs button,.keys button{border:1px solid #315b91;border-radius:10px;padding:12px;background:#142b50;color:white;font-weight:bold}
+button{cursor:pointer;border:1px solid #315b91;border-radius:9px;padding:12px;background:#142b50;color:white;font-weight:bold}
 .tabs button.active{background:#ffd52a;color:#111}
 .panel{display:none;max-width:480px;margin:auto}
 .panel.active{display:block}
-.display{width:100%;padding:18px;font-size:27px;border:2px solid #ffd52a;border-radius:14px;margin-bottom:12px;background:#101b32;color:#ffd52a;text-align:right}
+.display{width:100%;padding:18px;font-size:26px;border:2px solid #ffd52a;border-radius:12px;margin-bottom:12px;background:#101b32;color:#ffd52a;text-align:right}
 .keys{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.keys button{font-size:17px;min-height:49px}
-.keys button.operator{background:#e5a900;color:#111}
-.keys button.equal{background:#079b62;color:white}
-.keys button.clear{background:#c52f43;color:white}
-.card{background:#14213d;padding:16px;border:1px solid #b68b22;border-radius:13px;margin:12px 0}
-input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #526b91;background:#101b32;color:white;font-size:16px}
-.action{background:#ffd52a;color:#111;border:0;padding:12px 18px;border-radius:8px;font-weight:bold}
+.keys button{min-height:48px;font-size:16px}
+.operator{background:#e5a900;color:#111}
+.equal{background:#079b62}
+.clear{background:#c52f43}
+.card{background:#14213d;padding:15px;border:1px solid #b68b22;border-radius:12px;margin:12px 0}
+input{width:100%;padding:12px;margin:7px 0;border-radius:8px;border:1px solid #526b91;background:#101b32;color:white;font-size:16px}
+.action{background:#ffd52a;color:#111}
+p{color:#cbd5e1;line-height:1.5}
 </style>
 </head>
 <body>
@@ -70,17 +71,16 @@ input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px s
 <button class="operator" onclick="add('+')">+</button>
 <button onclick="backspace()">⌫</button>
 <button onclick="add('%')">%</button>
-<button class="operator" onclick="toggleAngle()">DEG</button>
+<button class="operator" onclick="toggleAngle()" id="angleBtn">DEG</button>
 <button class="equal" onclick="calculate()">=</button>
 </div>
-<p id="angle">Angle mode: DEG</p>
+<p id="angleText">Angle Mode: DEG</p>
 </section>
 
 <section id="average" class="panel">
 <div class="card">
 <h2>Average Calculator</h2>
-<p>Enter numbers separated by commas.</p>
-<input id="numbers" placeholder="Example: 10, 20, 30">
+<input id="numbers" placeholder="10, 20, 30">
 <button class="action" onclick="average()">Calculate Average</button>
 <h3 id="averageResult"></h3>
 </div>
@@ -89,14 +89,14 @@ input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px s
 <section id="formulas" class="panel">
 <div class="card">
 <h2>Math & Physics Formulas</h2>
-<p><b>Speed:</b> Distance ÷ Time</p>
-<p><b>Force:</b> Mass × Acceleration</p>
-<p><b>Work:</b> Force × Distance</p>
-<p><b>Density:</b> Mass ÷ Volume</p>
-<p><b>Area of circle:</b> π × r²</p>
-<p><b>Area of triangle:</b> ½ × Base × Height</p>
-<p><b>Ohm's Law:</b> Voltage = Current × Resistance</p>
-<p><b>Power:</b> Work ÷ Time</p>
+<p>Speed = Distance ÷ Time</p>
+<p>Force = Mass × Acceleration</p>
+<p>Work = Force × Distance</p>
+<p>Density = Mass ÷ Volume</p>
+<p>Circle Area = π × r²</p>
+<p>Triangle Area = ½ × Base × Height</p>
+<p>Ohm's Law = Voltage = Current × Resistance</p>
+<p>Power = Work ÷ Time</p>
 </div>
 </section>
 
@@ -104,7 +104,7 @@ input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px s
 <div class="card">
 <h2>My Formulas</h2>
 <input id="formulaName" placeholder="Formula name">
-<input id="formulaText" placeholder="Write your formula">
+<input id="formulaText" placeholder="Write formula">
 <button class="action" onclick="saveFormula()">Save Formula</button>
 <div id="savedFormulas"></div>
 </div>
@@ -113,80 +113,95 @@ input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px s
 <script>
 let degrees=true;
 
-function showTab(id,button){
- document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
- document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+function showTab(id,btn){
+ document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));
  document.getElementById(id).classList.add('active');
- button.classList.add('active');
+ btn.classList.add('active');
 }
 
 function add(value){
- document.getElementById('display').value+=value;
+ let d=document.getElementById('display');
+ if(d.value==='Error') d.value='';
+ d.value+=value;
 }
+
 function clearDisplay(){
  document.getElementById('display').value='';
 }
+
 function backspace(){
  let d=document.getElementById('display');
- d.value=d.value.slice(0,-1);
+ if(d.value==='Error') d.value='';
+ else d.value=d.value.slice(0,-1);
 }
+
 function toggleAngle(){
  degrees=!degrees;
- document.querySelector('.keys button:nth-child(32)').textContent=degrees?'DEG':'RAD';
- document.getElementById('angle').textContent='Angle mode: '+(degrees?'DEG':'RAD');
+ document.getElementById('angleBtn').textContent=degrees?'DEG':'RAD';
+ document.getElementById('angleText').textContent='Angle Mode: '+(degrees?'DEG':'RAD');
 }
+
 function factorial(n){
- if(n<0||!Number.isInteger(n)||n>170)throw Error();
+ if(n<0||!Number.isInteger(n)||n>170) throw Error();
  let r=1;
- for(let i=2;i<=n;i++)r*=i;
+ for(let i=2;i<=n;i++) r*=i;
  return r;
 }
+
 function calculate(){
  let d=document.getElementById('display');
  try{
-  let s=d.value.toLowerCase();
+  let s=d.value.toLowerCase().replace(/\s/g,'');
 
-  s=s.replace(/pi/g,'Math.PI')
-     .replace(/\be\b/g,'Math.E');
+  s=s.replace(/(\d+(?:\.\d+)?)!/g,'factorial($1)');
+  s=s.replace(/(\d+(?:\.\d+)?)%/g,'($1/100)');
+  s=s.replace(/\bpi\b/g,'Math.PI');
+  s=s.replace(/\be\b/g,'Math.E');
+
+  s=s.replace(/sin\(([^()]*)\)/g,
+   (_,x)=>'Math.sin('+(degrees?'('+x+'*Math.PI/180)':x)+')');
+
+  s=s.replace(/cos\(([^()]*)\)/g,
+   (_,x)=>'Math.cos('+(degrees?'('+x+'*Math.PI/180)':x)+')');
+
+  s=s.replace(/tan\(([^()]*)\)/g,
+   (_,x)=>'Math.tan('+(degrees?'('+x+'*Math.PI/180)':x)+')');
 
   s=s.replace(/sqrt\(/g,'Math.sqrt(')
-     .replace(/log\(/g,'Math.log10(')
-     .replace(/ln\(/g,'Math.log(');
+   .replace(/log\(/g,'Math.log10(')
+   .replace(/ln\(/g,'Math.log(')
+   .replace(/\^/g,'**');
 
-  let angle=degrees?'(Math.PI/180)*':'';
-
-  s=s.replace(/sin\(/g,'Math.sin('+angle)
-     .replace(/cos\(/g,'Math.cos('+angle)
-     .replace(/tan\(/g,'Math.tan('+angle);
-
-  s=s.replace(/(\d+)!/g,'factorial($1)');
-  s=s.replace(/\^/g,'**')
-     .replace(/(\d+(?:\.\d+)?)%/g,'($1/100)');
-
-  if(!/^[0-9+\-*/().,\sA-Za-z_*]+$/.test(s))throw Error();
+  if(!/^[0-9+\-*/().,\sA-Za-z_*]+$/.test(s)) throw Error();
 
   let result=Function('"use strict";return ('+s+')')();
-
-  if(!Number.isFinite(result))throw Error();
+  if(!Number.isFinite(result)) throw Error();
 
   d.value=Number(result.toPrecision(12));
-
  }catch(e){
   d.value='Error';
+ }
 }
+
 function average(){
- let values=document.getElementById('numbers').value.split(',').map(x=>Number(x.trim()));
- if(!values.length||values.some(x=>!Number.isFinite(x))){
-  document.getElementById('averageResult').textContent='Please enter valid numbers.';
+ let raw=document.getElementById('numbers').value.trim();
+ let values=raw.split(',').map(x=>Number(x.trim()));
+ if(!raw||values.some(x=>!Number.isFinite(x))){
+  document.getElementById('averageResult').textContent='Enter valid numbers';
   return;
  }
  let result=values.reduce((a,b)=>a+b,0)/values.length;
  document.getElementById('averageResult').textContent='Average: '+result;
 }
+
 function saveFormula(){
  let name=document.getElementById('formulaName').value.trim();
  let formula=document.getElementById('formulaText').value.trim();
- if(!name||!formula)return alert('Enter both name and formula.');
+ if(!name||!formula){
+  alert('Enter formula name and formula');
+  return;
+ }
  let list=JSON.parse(localStorage.getItem('myFormulas')||'[]');
  list.push({name,formula});
  localStorage.setItem('myFormulas',JSON.stringify(list));
@@ -194,13 +209,15 @@ function saveFormula(){
  document.getElementById('formulaText').value='';
  showFormulas();
 }
+
 function showFormulas(){
  let list=JSON.parse(localStorage.getItem('myFormulas')||'[]');
- document.getElementById('savedFormulas').innerHTML='';
- list.forEach((item,i)=>{
+ let area=document.getElementById('savedFormulas');
+ area.innerHTML='';
+ list.forEach(item=>{
   let p=document.createElement('p');
   p.textContent=item.name+': '+item.formula;
-  document.getElementById('savedFormulas').appendChild(p);
+  area.appendChild(p);
  });
 }
 showFormulas();
