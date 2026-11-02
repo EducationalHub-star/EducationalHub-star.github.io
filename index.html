@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Khan Apps - useful Android and web apps.">
+  <title>Khan Apps | Apps for Everyone</title>
+  <style>
+    :root{--ink:#172033;--muted:#64748b;--line:#e7ebf2;--blue:#2563eb;--bg:#f7f9fc}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+    header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0}
+    .wrap{width:min(1050px,92%);margin:auto}
+    nav{height:68px;display:flex;align-items:center;justify-content:space-between}
+    .brand{font-size:22px;font-weight:800;letter-spacing:-.5px}
+    .brand span{color:var(--blue)}
+    nav a{color:var(--muted);text-decoration:none;font-size:14px;margin-left:18px}
+    .hero{padding:58px 0 42px;text-align:center}
+    .tag{display:inline-block;background:#eaf1ff;color:#1d4ed8;padding:7px 12px;border-radius:30px;font-size:12px;font-weight:700}
+    h1{font-size:clamp(34px,7vw,54px);line-height:1.08;margin:18px 0 12px;letter-spacing:-1.5px}
+    .hero p{max-width:580px;margin:0 auto;color:var(--muted);line-height:1.7}
+    .search{margin:26px auto 0;max-width:460px}
+    .search input{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:12px;font-size:15px;outline:none}
+    .section{padding:20px 0 58px}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:18px}
+    h2{margin:0;font-size:24px}
+    .hint{font-size:13px;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+    .card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 5px 18px #17203308}
+    .app-icon{width:52px;height:52px;border-radius:14px;background:#edf3ff;color:var(--blue);display:grid;place-items:center;font-size:23px;font-weight:800}
+    .card h3{margin:15px 0 6px;font-size:18px}
+    .meta{font-size:12px;color:var(--blue);font-weight:700}
+    .card p{color:var(--muted);font-size:14px;line-height:1.55;min-height:44px}
+    .btn{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:700}
+    .btn.secondary{background:#eef2f7;color:#334155}
+    .notice{margin-top:18px;padding:14px 16px;background:#fff;border:1px dashed #cbd5e1;border-radius:12px;color:var(--muted);font-size:13px;line-height:1.6}
+    footer{background:#fff;border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-size:13px;text-align:center}
+    @media(max-width:520px){nav a{margin-left:10px}.hero{padding-top:42px}.section-head{display:block}.hint{margin-top:7px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="brand">KHAN <span>APPS</span></div>
+      <div><a href="#apps">Apps</a><a href="#about">About</a></div>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <span class="tag">ANDROID & WEB APPLICATIONS</span>
+    <h1>Useful apps.<br>Made to help.</h1>
+    <p>Welcome to Khan Apps. Explore simple, useful applications and download or open them from one place.</p>
+    <div class="search"><input id="search" type="search" placeholder="Search apps..." aria-label="Search apps"></div>
+  </section>
+  <section class="section" id="apps">
+    <div class="section-head"><h2>Our Apps</h2><span class="hint">New apps will appear here</span></div>
+    <div class="grid" id="appGrid">
+      <article class="card" data-search="sample web app demo web">
+        <div class="app-icon">K</div>
+        <h3>Coming Soon</h3>
+        <div class="meta">WEB APP · DEMO</div>
+        <p>Your first app will be listed here. Replace this sample card with your app details.</p>
+        <a class="btn secondary" href="#about">Coming soon</a>
+      </article>
+      <article class="card" data-search="android apk app">
+        <div class="app-icon">A</div>
+        <h3>Android App</h3>
+        <div class="meta">ANDROID · APK</div>
+        <p>Add your own APK download link after uploading the app file to a trusted host.</p>
+        <a class="btn secondary" href="#about">Coming soon</a>
+      </article>
+    </div>
+    <div class="notice">Safety note: Only publish apps you created or have permission to distribute. Before sharing an APK, test it and explain what permissions it requests. Never ask visitors to disable Android security protections.</div>
+  </section>
+  <section class="section" id="about">
+    <div class="card">
+      <h2>About Khan Apps</h2>
+      <p style="color:#64748b;line-height:1.7">Khan Apps is a small independent project sharing useful Android and web applications. Add your public contact method and app support information here when ready.</p>
+    </div>
+  </section>
+</main>
+<footer>© <span id="year"></span> Khan Apps. All rights reserved.</footer>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const search = document.getElementById('search');
+  search.addEventListener('input', () => {
+    const q = search.value.toLowerCase().trim();
+    document.querySelectorAll('#appGrid .card').forEach(card => {
+      card.style.display = card.dataset.search.includes(q) || card.innerText.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+</script>
+</body>
+</html>
