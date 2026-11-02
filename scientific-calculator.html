@@ -6,23 +6,23 @@
 <title>Scientific Calculator | Khan Apps</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#101a35;color:white;font-family:Arial,sans-serif;padding:15px}
-h1{text-align:center;color:#ffd45c}
-.tabs{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin:20px 0}
-.tabs button,.keys button{border:0;border-radius:8px;padding:12px;background:#24365e;color:white}
-.tabs button.active{background:#e5ad35;color:#101a35}
+body{margin:0;background:#050914;color:white;font-family:Arial,sans-serif;padding:12px}
+h1{text-align:center;color:#ffd52a;font-size:25px}
+p{color:#cbd5e1;line-height:1.5}
+.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:15px 0}
+.tabs button,.keys button{border:1px solid #315b91;border-radius:10px;padding:12px;background:#142b50;color:white;font-weight:bold}
+.tabs button.active{background:#ffd52a;color:#111}
 .panel{display:none;max-width:480px;margin:auto}
 .panel.active{display:block}
-.display{width:100%;padding:18px;font-size:24px;border:0;border-radius:10px;margin-bottom:12px;background:#fff;color:#111;text-align:right}
-.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.keys button{font-size:17px;min-height:52px}
-.keys button.operator{background:#d99b24;color:#111}
-.keys button.equal{background:#168b66}
-.keys button.clear{background:#b63d50}
-.card{background:#1c2b4d;padding:16px;border-radius:12px;margin:12px 0}
-input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:0;font-size:16px}
-.action{background:#e5ad35;color:#111;border:0;padding:12px 18px;border-radius:8px;font-weight:bold}
-p{line-height:1.6;color:#d6deef}
+.display{width:100%;padding:18px;font-size:27px;border:2px solid #ffd52a;border-radius:14px;margin-bottom:12px;background:#101b32;color:#ffd52a;text-align:right}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.keys button{font-size:17px;min-height:49px}
+.keys button.operator{background:#e5a900;color:#111}
+.keys button.equal{background:#079b62;color:white}
+.keys button.clear{background:#c52f43;color:white}
+.card{background:#14213d;padding:16px;border:1px solid #b68b22;border-radius:13px;margin:12px 0}
+input,select{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #526b91;background:#101b32;color:white;font-size:16px}
+.action{background:#ffd52a;color:#111;border:0;padding:12px 18px;border-radius:8px;font-weight:bold}
 </style>
 </head>
 <body>
