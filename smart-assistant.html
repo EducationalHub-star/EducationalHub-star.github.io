@@ -434,7 +434,7 @@ function saveCurrentChat(){
  const savedMessages=current.map(m=>({
   role:m.role,
   text:typeof m.text==="string"?m.text:"",
-  files:Array.isArray(m.files)?m.files.map(f=>({name:String(f.name||"File")})):[]
+  files:Array.isArray(m.files)?m.files.map(f=>({name:String(f.name||"File"))})):[]
  }));
  const existingIndex=chats.findIndex(c=>c.id===activeChatId);
  const chat={
@@ -492,13 +492,14 @@ function restoreChats(){
 }
 
 function showWelcome(){
- document.getElementById("messages").innerHTML="";
+ document.getElementById("messages").replaceChildren();
  document.getElementById("welcome").style.display="block";
 }
 
 function renderCurrentChat(){
  const messages=document.getElementById("messages");
- messages.innerHTML="";
+ // Always clear the previous DOM before rendering the selected chat snapshot.
+ messages.replaceChildren();
  document.getElementById("welcome").style.display=current.length?"none":"block";
  current.forEach(renderMessage);
 }
@@ -510,7 +511,7 @@ function newChat(){
  activeChatId=null;
  files=[];
 
- document.getElementById("messages").innerHTML="";
+ document.getElementById("messages").replaceChildren();
  document.getElementById("welcome").style.display="block";
  document.getElementById("prompt").value="";
  document.getElementById("fileNames").textContent="";
@@ -522,7 +523,7 @@ function newChat(){
 
 function renderHistory(){
  const box=document.getElementById("history");
- box.innerHTML="";
+ box.replaceChildren();
 
  chats.forEach(c=>{
   const row=document.createElement("div");
@@ -553,23 +554,33 @@ function renderHistory(){
 }
 
 function loadChat(id){
- const chat=chats.find(c=>c.id===id);
- if(!chat)return;
- if(id===activeChatId){
-  closeSidebar();
-  return;
+ const requestedId=String(id);
+ let selected=chats.find(c=>c.id===requestedId);
+ if(!selected)return;
+
+ // Save changes to the conversation being left, but never short-circuit
+ // when the requested conversation is already active: redraw it on every click.
+ if(activeChatId&&activeChatId!==requestedId){
+  saveCurrentChat();
+  selected=chats.find(c=>c.id===requestedId);
+  if(!selected)return;
  }
 
- // Save any unsaved changes in the conversation being left first.
- saveCurrentChat();
- const selected=chats.find(c=>c.id===id);
- if(!selected)return;
+ // Take an independent snapshot before rendering so repeated clicks cannot
+ // append to or mutate the stored message list.
+ const selectedMessages=selected.messages.map(m=>({
+  role:m.role,
+  text:typeof m.text==="string"?m.text:"",
+  files:Array.isArray(m.files)?m.files.map(f=>({name:String(f.name||"File")})):[]
+ }));
  activeChatId=selected.id;
- current=selected.messages.map(m=>({...m,files:(m.files||[]).map(f=>({...f}))}));
+ current=selectedMessages;
  files=[];
  document.getElementById("prompt").value="";
  document.getElementById("fileNames").textContent="";
  document.getElementById("fileInput").value="";
+
+ // Render only the selected chat; replaceChildren prevents stale or duplicate rows.
  renderCurrentChat();
  persistChats();
  renderHistory();
