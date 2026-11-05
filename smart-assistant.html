@@ -7,207 +7,150 @@
 <title>Smart Assistant AI</title>
 
 <style>
-:root {
-  --bg:#ffffff;
-  --panel:#f7f7f8;
-  --text:#202123;
-  --muted:#777;
-  --border:#e5e5e5;
-  --accent:#2563eb;
-  --bubble:#f1f5f9;
+:root{
+ --bg:#ffffff;
+ --panel:#f7f7f8;
+ --text:#202123;
+ --muted:#777;
+ --border:#e5e5e5;
+ --accent:#10a37f;
+ --message:#f4f4f4;
 }
-body.dark {
-  --bg:#171717;
-  --panel:#222222;
-  --text:#eeeeee;
-  --muted:#aaa;
-  --border:#383838;
-  --accent:#60a5fa;
-  --bubble:#292929;
+body.dark{
+ --bg:#212121;
+ --panel:#171717;
+ --text:#eeeeee;
+ --muted:#aaa;
+ --border:#383838;
+ --message:#303030;
 }
-* {box-sizing:border-box;margin:0;padding:0}
-body {
-  font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  height:100vh;
-  overflow:hidden;
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:var(--bg);
+ color:var(--text);
 }
-.app {display:flex;height:100vh}
-.sidebar {
-  width:260px;
-  background:var(--panel);
-  padding:15px;
-  display:flex;
-  flex-direction:column;
-  border-right:1px solid var(--border);
+.app{display:flex;height:100vh;overflow:hidden}
+.sidebar{
+ width:260px;background:var(--panel);
+ border-right:1px solid var(--border);
+ padding:15px;display:flex;flex-direction:column;
 }
-.brand {
-  font-size:21px;
-  font-weight:bold;
-  padding:12px 5px 22px;
+.logo{font-size:20px;font-weight:bold;margin:12px 5px 25px}
+.logo span{color:var(--accent)}
+.sidebtn{
+ width:100%;padding:13px;margin-bottom:9px;
+ border:1px solid var(--border);border-radius:10px;
+ background:var(--bg);color:var(--text);
+ text-align:left;font-size:14px;cursor:pointer;
 }
-.new-chat,.side-btn {
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:var(--bg);
-  color:var(--text);
-  text-align:left;
-  cursor:pointer;
-  margin-bottom:10px;
+.sidebtn:hover{background:var(--message)}
+.history{margin-top:22px;overflow:auto;flex:1}
+.history h4{color:var(--muted);font-size:12px}
+.history-item{
+ padding:11px;border-radius:8px;cursor:pointer;
+ font-size:13px;overflow:hidden;text-overflow:ellipsis;
+ white-space:nowrap;
 }
-.new-chat:hover,.side-btn:hover {background:var(--bubble)}
-.history-title {
-  font-size:12px;
-  color:var(--muted);
-  margin:20px 5px 10px;
+.history-item:hover{background:var(--message)}
+.sidebar-bottom{border-top:1px solid var(--border);padding-top:12px}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{
+ height:60px;border-bottom:1px solid var(--border);
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 18px;
 }
-.history {
-  overflow-y:auto;
-  flex:1;
+.topbar strong{font-size:17px}
+.top-actions{display:flex;gap:8px}
+.smallbtn{
+ background:var(--panel);border:1px solid var(--border);
+ color:var(--text);padding:9px 12px;border-radius:9px;
+ cursor:pointer;
 }
-.history-item {
-  padding:11px;
-  border-radius:8px;
-  font-size:14px;
-  cursor:pointer;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+.chat{
+ flex:1;overflow-y:auto;padding:25px 16px;
 }
-.history-item:hover {background:var(--bubble)}
-.sidebar-bottom {margin-top:auto}
-.main {
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  min-width:0;
+.welcome{text-align:center;margin:12vh auto 35px}
+.welcome h1{font-size:30px}
+.welcome p{color:var(--muted)}
+.welcome-icon{
+ width:55px;height:55px;border-radius:18px;
+ background:var(--accent);color:white;
+ display:grid;place-items:center;font-size:25px;
+ margin:auto;
 }
-.topbar {
-  height:60px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 20px;
+.messages{max-width:780px;margin:auto}
+.message{display:flex;gap:12px;margin:25px 0;line-height:1.65}
+.avatar{
+ min-width:32px;height:32px;border-radius:50%;
+ background:var(--accent);color:white;
+ display:grid;place-items:center;font-size:13px;
 }
-.topbar strong {font-size:17px}
-.top-actions {display:flex;gap:8px}
-.icon-btn {
-  background:var(--panel);
-  border:1px solid var(--border);
-  color:var(--text);
-  border-radius:9px;
-  padding:9px 12px;
-  cursor:pointer;
+.message-content{
+ background:var(--message);padding:13px 16px;
+ border-radius:12px;max-width:90%;overflow-wrap:anywhere;
 }
-.menu-btn {display:none}
-.chat-area {
-  flex:1;
-  overflow-y:auto;
-  padding:30px 18px;
+.message.user .avatar{background:#555}
+.message img,.message video{
+ max-width:100%;max-height:250px;border-radius:10px;
+ display:block;margin-top:8px;
 }
-.welcome {
-  text-align:center;
-  margin:12vh auto 30px;
-  max-width:600px;
+.message iframe{width:100%;height:250px;border:0}
+.composer-area{padding:12px 15px 18px}
+.composer{
+ max-width:780px;margin:auto;
+ border:1px solid var(--border);border-radius:18px;
+ background:var(--bg);padding:10px;
+ box-shadow:0 2px 12px #0000000a;
 }
-.welcome h1 {
-  font-size:30px;
-  margin-bottom:12px;
+#prompt{
+ width:100%;resize:none;min-height:48px;max-height:150px;
+ border:0;outline:0;background:transparent;
+ color:var(--text);font-size:16px;padding:10px;
 }
-.welcome p {
-  color:var(--muted);
-  line-height:1.6;
+.tools{display:flex;justify-content:space-between;align-items:center}
+.tool-left,.tool-right{display:flex;gap:7px}
+.tool{
+ border:0;background:var(--panel);color:var(--text);
+ border-radius:10px;padding:10px;cursor:pointer;
 }
-.messages {
-  max-width:760px;
-  margin:auto;
+.send{
+ background:var(--accent);color:white;
+ border:0;border-radius:10px;padding:10px 16px;
+ cursor:pointer;font-weight:bold;
 }
-.message {
-  padding:15px 18px;
-  margin:15px 0;
-  border-radius:14px;
-  line-height:1.7;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
+.note{text-align:center;color:var(--muted);font-size:11px;margin-top:10px}
+#fileInput{display:none}
+#fileList{font-size:12px;color:var(--muted);padding:5px}
+.modal-bg{
+ position:fixed;inset:0;background:#0009;
+ display:none;align-items:center;justify-content:center;
+ padding:15px;z-index:10;
 }
-.user {background:var(--bubble);margin-left:12%}
-.assistant {background:transparent}
-.composer-wrap {
-  padding:15px 18px 10px;
-  background:var(--bg);
+.modal{
+ background:var(--bg);color:var(--text);
+ border:1px solid var(--border);border-radius:15px;
+ padding:22px;width:100%;max-width:420px;
 }
-.composer {
-  max-width:760px;
-  margin:auto;
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:12px;
-  box-shadow:0 3px 15px #0000000c;
+.modal input{
+ width:100%;padding:12px;margin:8px 0 15px;
+ border:1px solid var(--border);border-radius:9px;
+ background:var(--panel);color:var(--text);
 }
-#prompt {
-  width:100%;
-  min-height:55px;
-  max-height:150px;
-  resize:vertical;
-  border:0;
-  outline:none;
-  background:transparent;
-  color:var(--text);
-  font-size:16px;
-  padding:8px;
-}
-.composer-actions {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-}
-.action-group {display:flex;gap:7px;flex-wrap:wrap}
-.send-btn {
-  background:var(--accent);
-  color:white;
-  border:0;
-  padding:10px 16px;
-  border-radius:10px;
-  cursor:pointer;
-}
-.file-label {
-  cursor:pointer;
-  background:var(--panel);
-  padding:9px 12px;
-  border-radius:9px;
-  font-size:14px;
-}
-#fileInput {display:none}
-#fileInfo {
-  font-size:12px;
-  color:var(--muted);
-  padding:7px;
-}
-.disclaimer {
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  padding:8px;
-}
-footer {text-align:center;color:var(--muted);font-size:11px;padding:5px}
-@media(max-width:700px) {
-  .sidebar {
-    position:fixed;
-    z-index:5;
-    left:-270px;
-    top:0;
-    bottom:0;
-    transition:left .25s;
-  }
-  .sidebar.open {left:0}
-  .menu-btn {display:block}
-  .welcome h1 {font-size:25px}
-  .topbar {padding:0 12px}
-  .user {margin-left:4%}
+.modal button{margin:4px}
+@media(max-width:650px){
+ .sidebar{width:75px;padding:9px}
+ .logo{font-size:14px;margin:12px 0 20px}
+ .logo span{display:none}
+ .sidebtn{font-size:0;text-align:center;padding:13px 3px}
+ .sidebtn::first-letter{font-size:18px}
+ .history{display:none}
+ .sidebar-bottom{font-size:10px}
+ .topbar{padding:0 10px}
+ .topbar strong{font-size:14px}
+ .smallbtn{padding:8px;font-size:12px}
+ .welcome h1{font-size:24px}
 }
 </style>
 </head>
@@ -215,193 +158,252 @@ footer {text-align:center;color:var(--muted);font-size:11px;padding:5px}
 <body>
 <div class="app">
 
-<aside class="sidebar" id="sidebar">
-  <div class="brand">✦ Smart Assistant</div>
+<aside class="sidebar">
+ <div class="logo">Smart <span>Assistant AI</span></div>
 
-  <button class="new-chat" onclick="newChat()">＋ New Chat</button>
+ <button class="sidebtn" onclick="newChat()">＋ New Chat</button>
+ <button class="sidebtn" onclick="document.getElementById('fileInput').click()">📎 Attach File</button>
 
-  <div class="history-title">RECENT CHATS</div>
-  <div class="history" id="history"></div>
+ <div class="history">
+  <h4>RECENT CHATS</h4>
+  <div id="historyList"></div>
+ </div>
 
-  <div class="sidebar-bottom">
-    <button class="side-btn" onclick="toggleTheme()">◐ Change Theme</button>
-    <button class="side-btn" onclick="showAbout()">ⓘ About</button>
-  </div>
+ <div class="sidebar-bottom">
+  <button class="sidebtn" onclick="toggleTheme()">🌙 Change Theme</button>
+  <button class="sidebtn" onclick="openAdmin()">⚙ Admin Panel</button>
+  <button class="sidebtn" onclick="showAbout()">ⓘ About</button>
+ </div>
 </aside>
 
 <main class="main">
-  <div class="topbar">
-    <div style="display:flex;align-items:center;gap:12px">
-      <button class="icon-btn menu-btn" onclick="toggleMenu()">☰</button>
-      <strong>Smart Assistant AI</strong>
-    </div>
-    <div class="top-actions">
-      <button class="icon-btn" onclick="toggleTheme()">◐</button>
-    </div>
+ <header class="topbar">
+  <strong>Smart Assistant AI</strong>
+  <div class="top-actions">
+   <button class="smallbtn" onclick="exportPDF()">📄 PDF</button>
+   <button class="smallbtn" onclick="newChat()">＋ New</button>
   </div>
+ </header>
 
-  <section class="chat-area" id="chatArea">
-    <div class="welcome" id="welcome">
-      <h1>How can I help you today?</h1>
-      <p>Your personal smart assistant for writing, learning, documents and everyday tasks.</p>
-    </div>
-    <div class="messages" id="messages"></div>
-  </section>
-
-  <div class="composer-wrap">
-    <div class="composer">
-      <textarea id="prompt" placeholder="Message Smart Assistant..." onkeydown="handleEnter(event)"></textarea>
-
-      <div id="fileInfo"></div>
-
-      <div class="composer-actions">
-        <div class="action-group">
-          <label class="file-label" for="fileInput">＋ Attach</label>
-          <input type="file" id="fileInput" accept="image/*,video/*,.pdf,.txt,.doc,.docx" multiple onchange="showFiles()">
-          <button class="icon-btn" onclick="startVoice()" title="Voice input">🎙</button>
-        </div>
-        <button class="send-btn" onclick="sendMessage()">Send ↑</button>
-      </div>
-    </div>
-    <div class="disclaimer">
-      Smart Assistant AI can make mistakes. Check important information.
-    </div>
+ <section class="chat" id="chat">
+  <div class="welcome" id="welcome">
+   <div class="welcome-icon">✦</div>
+   <h1>How can I help you today?</h1>
+   <p>Your Smart Assistant for everyday tasks.</p>
   </div>
+  <div class="messages" id="messages"></div>
+ </section>
 
-  <footer>© 2026 Smart Assistant AI</footer>
+ <section class="composer-area">
+  <div class="composer">
+   <textarea id="prompt" placeholder="Message Smart Assistant AI..."></textarea>
+   <div id="fileList"></div>
+   <div class="tools">
+    <div class="tool-left">
+     <button class="tool" onclick="document.getElementById('fileInput').click()">＋</button>
+     <button class="tool" onclick="startVoice()">🎤</button>
+    </div>
+    <div class="tool-right">
+     <button class="send" onclick="sendMessage()">Send ↑</button>
+    </div>
+   </div>
+  </div>
+  <input type="file" id="fileInput" multiple
+   accept="image/*,video/*,.pdf,.txt,.doc,.docx">
+  <div class="note">Smart Assistant AI • Preview Version</div>
+ </section>
 </main>
 </div>
 
+<div class="modal-bg" id="modalBg">
+ <div class="modal">
+  <h3 id="modalTitle">Information</h3>
+  <div id="modalContent"></div>
+  <button class="send" onclick="closeModal()">Close</button>
+ </div>
+</div>
+
 <script>
-let chats = [];
-let currentChat = [];
-let selectedFiles = [];
+let selectedFiles=[];
+let chatHistory=[];
+let currentMessages=[];
 
-function addMessage(text, type) {
-  const box = document.createElement("div");
-  box.className = "message " + type;
-  box.textContent = text;
-  document.getElementById("messages").appendChild(box);
-  document.getElementById("chatArea").scrollTop =
-    document.getElementById("chatArea").scrollHeight;
+const promptBox=document.getElementById("prompt");
+const fileInput=document.getElementById("fileInput");
+
+function showModal(title,content){
+ document.getElementById("modalTitle").textContent=title;
+ document.getElementById("modalContent").innerHTML=content;
+ document.getElementById("modalBg").style.display="flex";
+}
+function closeModal(){
+ document.getElementById("modalBg").style.display="none";
+}
+function toggleTheme(){
+ document.body.classList.toggle("dark");
+ localStorage.setItem("smartTheme",
+ document.body.classList.contains("dark")?"dark":"light");
+}
+if(localStorage.getItem("smartTheme")==="dark"){
+ document.body.classList.add("dark");
 }
 
-function sendMessage() {
-  const input = document.getElementById("prompt");
-  const text = input.value.trim();
-
-  if (!text && selectedFiles.length === 0) {
-    alert("Please write a message or select a file.");
-    return;
-  }
-
-  document.getElementById("welcome").style.display = "none";
-
-  if (text) {
-    addMessage(text, "user");
-    currentChat.push({text, type:"user"});
-  }
-
-  if (selectedFiles.length) {
-    const names = selectedFiles.map(f => f.name).join(", ");
-    addMessage("Selected files: " + names, "user");
-  }
-
-  addMessage(
-    "This is the Smart Assistant preview. Connect an AI backend to receive real AI answers and process uploaded files.",
-    "assistant"
-  );
-
-  input.value = "";
-  selectedFiles = [];
-  document.getElementById("fileInput").value = "";
-  document.getElementById("fileInfo").textContent = "";
-  saveCurrentChat();
-}
-
-function handleEnter(event) {
-  if (event.key === "Enter" && !event.shiftKey) {
-    event.preventDefault();
-    sendMessage();
-  }
-}
-
-function newChat() {
-  currentChat = [];
-  document.getElementById("messages").innerHTML = "";
-  document.getElementById("welcome").style.display = "block";
-  document.getElementById("prompt").value = "";
-  document.getElementById("fileInfo").textContent = "";
-  selectedFiles = [];
-  document.getElementById("fileInput").value = "";
-}
-
-function saveCurrentChat() {
-  if (currentChat.length === 0) return;
-  const title = currentChat[0].text.slice(0,35) || "New Chat";
-  const item = {title, messages:[...currentChat]};
-  chats.unshift(item);
-  renderHistory();
-}
-
-function renderHistory() {
-  const history = document.getElementById("history");
-  history.innerHTML = "";
-  chats.forEach((chat) => {
-    const div = document.createElement("div");
-    div.className = "history-item";
-    div.textContent = chat.title;
-    div.onclick = () => {
-      newChat();
-      document.getElementById("welcome").style.display = "none";
-      chat.messages.forEach(m => addMessage(m.text,m.type));
-    };
-    history.appendChild(div);
+function newChat(){
+ if(currentMessages.length){
+  chatHistory.unshift({
+   title:currentMessages[0].text.slice(0,35)||"New Chat",
+   messages:currentMessages
   });
+  renderHistory();
+ }
+ currentMessages=[];
+ document.getElementById("messages").innerHTML="";
+ document.getElementById("welcome").style.display="block";
+ selectedFiles=[];
+ document.getElementById("fileList").textContent="";
+ promptBox.value="";
 }
 
-function showFiles() {
-  selectedFiles = Array.from(document.getElementById("fileInput").files);
-  document.getElementById("fileInfo").textContent =
-    selectedFiles.map(f => f.name).join(" • ");
+function renderHistory(){
+ const box=document.getElementById("historyList");
+ box.innerHTML="";
+ chatHistory.forEach((chat,index)=>{
+  const item=document.createElement("div");
+  item.className="history-item";
+  item.textContent="💬 "+chat.title;
+  item.onclick=()=>loadHistory(index);
+  box.appendChild(item);
+ });
+}
+function loadHistory(index){
+ currentMessages=chatHistory[index].messages.map(m=>({...m}));
+ document.getElementById("messages").innerHTML="";
+ document.getElementById("welcome").style.display="none";
+ currentMessages.forEach(m=>renderMessage(m));
 }
 
-function toggleTheme() {
-  document.body.classList.toggle("dark");
-  localStorage.setItem(
-    "smartTheme",
-    document.body.classList.contains("dark") ? "dark" : "light"
-  );
+fileInput.addEventListener("change",()=>{
+ selectedFiles=Array.from(fileInput.files);
+ document.getElementById("fileList").textContent=
+ selectedFiles.map(f=>"📎 "+f.name).join("   ");
+});
+
+function renderMessage(data){
+ const row=document.createElement("div");
+ row.className="message "+data.role;
+ const avatar=document.createElement("div");
+ avatar.className="avatar";
+ avatar.textContent=data.role==="user"?"You":"AI";
+ const content=document.createElement("div");
+ content.className="message-content";
+ const text=document.createElement("div");
+ text.textContent=data.text;
+ content.appendChild(text);
+
+ if(data.files){
+  data.files.forEach(file=>{
+   const label=document.createElement("p");
+   label.textContent="📎 "+file.name;
+   content.appendChild(label);
+  });
+ }
+ row.appendChild(avatar);
+ row.appendChild(content);
+ document.getElementById("messages").appendChild(row);
+ document.getElementById("chat").scrollTop=
+ document.getElementById("chat").scrollHeight;
 }
 
-if (localStorage.getItem("smartTheme") === "dark") {
-  document.body.classList.add("dark");
+function sendMessage(){
+ const text=promptBox.value.trim();
+ if(!text&&!selectedFiles.length)return;
+
+ document.getElementById("welcome").style.display="none";
+
+ const files=selectedFiles.map(f=>({name:f.name}));
+ const userMessage={role:"user",text,files};
+ currentMessages.push(userMessage);
+ renderMessage(userMessage);
+
+ promptBox.value="";
+ selectedFiles=[];
+ fileInput.value="";
+ document.getElementById("fileList").textContent="";
+
+ const reply={
+  role:"ai",
+  text:"This is the Smart Assistant preview. Real AI answers and file processing will be enabled after connecting a secure AI backend."
+ };
+ currentMessages.push(reply);
+ renderMessage(reply);
 }
 
-function toggleMenu() {
-  document.getElementById("sidebar").classList.toggle("open");
+promptBox.addEventListener("keydown",e=>{
+ if(e.key==="Enter"&&!e.shiftKey){
+  e.preventDefault();
+  sendMessage();
+ }
+});
+
+function startVoice(){
+ const SpeechRecognition=
+ window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SpeechRecognition){
+  alert("Voice input is not supported in this browser.");
+  return;
+ }
+ const recognition=new SpeechRecognition();
+ recognition.lang="ur-PK";
+ recognition.onresult=e=>{
+  promptBox.value+=e.results[0][0].transcript;
+ };
+ recognition.start();
 }
 
-function startVoice() {
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    alert("Voice input is not supported by this browser.");
-    return;
-  }
-
-  const recognition = new SpeechRecognition();
-  recognition.lang = "ur-PK";
-  recognition.onresult = event => {
-    document.getElementById("prompt").value =
-      event.results[0][0].transcript;
-  };
-  recognition.start();
+function exportPDF(){
+ const content=currentMessages.map(m=>
+ (m.role==="user"?"You: ":"AI: ")+m.text
+ ).join("\n\n");
+ const win=window.open("","_blank");
+ if(!win){
+  alert("Please allow pop-ups to create PDF.");
+  return;
+ }
+ const safe=content.replace(/[&<>"]/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"
+ }[c]));
+ win.document.write(
+ "<html><head><title>Smart Assistant Chat</title></head>"+
+ "<body style='font-family:Arial;padding:30px;white-space:pre-wrap'>"+
+ "<h2>Smart Assistant AI</h2><hr>"+safe+
+ "</body></html>"
+ );
+ win.document.close();
+ win.print();
 }
 
-function showAbout() {
-  alert("Smart Assistant AI\nA multi-purpose assistant project.");
+function openAdmin(){
+ showModal("Admin Panel",
+ "<p>This is a local preview of the Admin Panel.</p>"+
+ "<label>Maximum users (demo)</label>"+
+ "<input id='maxUsers' type='number' min='1' value='100'>"+
+ "<label>Daily message limit (demo)</label>"+
+ "<input id='dailyLimit' type='number' min='1' value='30'>"+
+ "<button class='send' onclick='saveAdmin()'>Save Settings</button>"+
+ "<p id='adminStatus'></p>");
+}
+function saveAdmin(){
+ const users=document.getElementById("maxUsers").value;
+ const limit=document.getElementById("dailyLimit").value;
+ localStorage.setItem("demoUsers",users);
+ localStorage.setItem("demoLimit",limit);
+ document.getElementById("adminStatus").textContent=
+ "Demo settings saved on this device.";
+}
+function showAbout(){
+ showModal("About Smart Assistant AI",
+ "<p>Smart Assistant AI is a project designed to help users with everyday tasks.</p>"+
+ "<p>Version: 1.0 Preview</p>");
 }
 </script>
 </body>
