@@ -7,150 +7,366 @@
 <title>Smart Assistant AI</title>
 
 <style>
-:root{
- --bg:#ffffff;
- --panel:#f7f7f8;
- --text:#202123;
- --muted:#777;
- --border:#e5e5e5;
- --accent:#10a37f;
- --message:#f4f4f4;
+:root {
+  --bg:#090b14;
+  --sidebar:#0e1120;
+  --panel:#151a2b;
+  --text:#f5f6ff;
+  --muted:#9299b5;
+  --border:#242a40;
+  --accent:#8b5cf6;
+  --blue:#3984ff;
+  --bubble:#191f33;
 }
-body.dark{
- --bg:#212121;
- --panel:#171717;
- --text:#eeeeee;
- --muted:#aaa;
- --border:#383838;
- --message:#303030;
+body.light {
+  --bg:#f5f6fc;
+  --sidebar:#ffffff;
+  --panel:#ffffff;
+  --text:#17182a;
+  --muted:#777e96;
+  --border:#e4e6ef;
+  --accent:#7546e8;
+  --blue:#3478ed;
+  --bubble:#edf0fa;
 }
 *{box-sizing:border-box}
 body{
  margin:0;
- font-family:Arial,sans-serif;
  background:var(--bg);
  color:var(--text);
+ font-family:Inter,Arial,sans-serif;
+ height:100vh;
+ overflow:hidden;
 }
-.app{display:flex;height:100vh;overflow:hidden}
+button{font:inherit;cursor:pointer}
+.app{display:flex;height:100vh}
+
+/* SIDEBAR */
 .sidebar{
- width:260px;background:var(--panel);
+ width:265px;
+ background:var(--sidebar);
  border-right:1px solid var(--border);
- padding:15px;display:flex;flex-direction:column;
+ display:flex;
+ flex-direction:column;
+ padding:20px 15px;
+ transition:.3s;
+ z-index:5;
 }
-.logo{font-size:20px;font-weight:bold;margin:12px 5px 25px}
-.logo span{color:var(--accent)}
-.sidebtn{
- width:100%;padding:13px;margin-bottom:9px;
- border:1px solid var(--border);border-radius:10px;
- background:var(--bg);color:var(--text);
- text-align:left;font-size:14px;cursor:pointer;
+.brand{
+ display:flex;
+ align-items:center;
+ gap:11px;
+ padding:8px 7px 27px;
+ font-size:19px;
+ font-weight:750;
+ letter-spacing:-.5px;
 }
-.sidebtn:hover{background:var(--message)}
-.history{margin-top:22px;overflow:auto;flex:1}
-.history h4{color:var(--muted);font-size:12px}
-.history-item{
- padding:11px;border-radius:8px;cursor:pointer;
- font-size:13px;overflow:hidden;text-overflow:ellipsis;
- white-space:nowrap;
+.brand-icon{
+ width:38px;height:38px;
+ display:grid;place-items:center;
+ border-radius:13px;
+ background:linear-gradient(135deg,#8b5cf6,#277bff);
+ box-shadow:0 5px 20px #7546e855;
+ color:white;font-size:20px;
 }
-.history-item:hover{background:var(--message)}
-.sidebar-bottom{border-top:1px solid var(--border);padding-top:12px}
-.main{flex:1;display:flex;flex-direction:column;min-width:0}
-.topbar{
- height:60px;border-bottom:1px solid var(--border);
- display:flex;align-items:center;justify-content:space-between;
- padding:0 18px;
+.brand span{
+ background:linear-gradient(90deg,#a78bfa,#60a5fa);
+ -webkit-background-clip:text;
+ color:transparent;
 }
-.topbar strong{font-size:17px}
-.top-actions{display:flex;gap:8px}
-.smallbtn{
- background:var(--panel);border:1px solid var(--border);
- color:var(--text);padding:9px 12px;border-radius:9px;
+.new-chat{
+ width:100%;
+ padding:13px;
+ border:0;border-radius:12px;
+ background:linear-gradient(100deg,#7849ed,#367cf5);
+ color:white;
+ font-weight:650;
+ box-shadow:0 5px 20px #7546e833;
+}
+.side-label{
+ color:var(--muted);
+ font-size:11px;
+ letter-spacing:1.4px;
+ margin:28px 9px 12px;
+ font-weight:bold;
+}
+.side-item{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:12px;
+ margin-bottom:5px;
+ border-radius:10px;
+ color:var(--muted);
  cursor:pointer;
+ font-size:14px;
+ transition:.2s;
 }
-.chat{
- flex:1;overflow-y:auto;padding:25px 16px;
+.side-item:hover,.side-item.active{
+ background:var(--panel);
+ color:var(--text);
 }
-.welcome{text-align:center;margin:12vh auto 35px}
-.welcome h1{font-size:30px}
-.welcome p{color:var(--muted)}
-.welcome-icon{
- width:55px;height:55px;border-radius:18px;
- background:var(--accent);color:white;
- display:grid;place-items:center;font-size:25px;
+.history{
+ flex:1;
+ overflow:auto;
+}
+.history-item{
+ padding:11px;
+ border-radius:9px;
+ color:var(--muted);
+ font-size:13px;
+ cursor:pointer;
+ overflow:hidden;
+ white-space:nowrap;
+ text-overflow:ellipsis;
+}
+.history-item:hover{background:var(--panel)}
+.sidebar-bottom{
+ border-top:1px solid var(--border);
+ padding-top:12px;
+}
+
+/* MAIN */
+.main{
+ flex:1;
+ min-width:0;
+ display:flex;
+ flex-direction:column;
+ position:relative;
+}
+.topbar{
+ height:70px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 28px;
+ border-bottom:1px solid var(--border);
+}
+.top-left{display:flex;align-items:center;gap:14px}
+.top-title{font-size:16px;font-weight:700}
+.version{
+ font-size:10px;
+ color:#a78bfa;
+ background:#8b5cf61b;
+ border:1px solid #8b5cf644;
+ padding:5px 9px;
+ border-radius:20px;
+}
+.top-right{display:flex;gap:9px}
+.icon-btn{
+ width:39px;height:39px;
+ border:1px solid var(--border);
+ background:var(--panel);
+ color:var(--text);
+ border-radius:11px;
+}
+.icon-btn:hover{border-color:var(--accent)}
+
+/* CHAT */
+.chat-area{
+ flex:1;
+ overflow-y:auto;
+ padding:25px 20px;
+}
+.welcome{
+ max-width:850px;
+ margin:8vh auto 0;
+ text-align:center;
+}
+.orb{
+ width:85px;height:85px;
+ margin:0 auto 25px;
+ border-radius:27px;
+ display:grid;place-items:center;
+ font-size:39px;color:white;
+ background:linear-gradient(135deg,#8b5cf6,#287bfa);
+ box-shadow:0 0 55px #7849ed55;
+ animation:float 4s ease-in-out infinite;
+}
+@keyframes float{
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-9px)}
+}
+.welcome h1{
+ font-size:clamp(27px,4vw,42px);
+ letter-spacing:-1.5px;
+ margin:0 0 12px;
+}
+.gradient-text{
+ background:linear-gradient(90deg,#a78bfa,#60a5fa);
+ -webkit-background-clip:text;
+ color:transparent;
+}
+.welcome p{
+ color:var(--muted);
+ font-size:15px;
+}
+.suggestions{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:13px;
+ max-width:650px;
+ margin:38px auto;
+ text-align:left;
+}
+.suggestion{
+ padding:18px;
+ background:var(--panel);
+ border:1px solid var(--border);
+ border-radius:15px;
+ cursor:pointer;
+ transition:.25s;
+}
+.suggestion:hover{
+ transform:translateY(-3px);
+ border-color:var(--accent);
+}
+.suggestion .emoji{font-size:23px}
+.suggestion strong{
+ display:block;
+ margin:12px 0 5px;
+ font-size:14px;
+}
+.suggestion small{color:var(--muted);font-size:12px}
+
+/* MESSAGES */
+.messages{
+ max-width:820px;
  margin:auto;
 }
-.messages{max-width:780px;margin:auto}
-.message{display:flex;gap:12px;margin:25px 0;line-height:1.65}
+.message{
+ display:flex;
+ gap:13px;
+ margin:25px 0;
+ align-items:flex-start;
+}
 .avatar{
- min-width:32px;height:32px;border-radius:50%;
- background:var(--accent);color:white;
- display:grid;place-items:center;font-size:13px;
+ width:34px;height:34px;
+ flex-shrink:0;
+ display:grid;place-items:center;
+ border-radius:12px;
+ background:linear-gradient(135deg,#8b5cf6,#3478ff);
+ color:white;
+ font-size:13px;
+ font-weight:bold;
 }
-.message-content{
- background:var(--message);padding:13px 16px;
- border-radius:12px;max-width:90%;overflow-wrap:anywhere;
+.message.user .avatar{background:#424a60}
+.message-body{max-width:88%;min-width:0}
+.message-name{
+ font-size:12px;
+ color:var(--muted);
+ margin:0 0 8px 2px;
 }
-.message.user .avatar{background:#555}
+.message-text{
+ padding:14px 17px;
+ background:var(--bubble);
+ border:1px solid var(--border);
+ border-radius:4px 15px 15px 15px;
+ line-height:1.7;
+ overflow-wrap:anywhere;
+ font-size:14px;
+}
 .message img,.message video{
- max-width:100%;max-height:250px;border-radius:10px;
- display:block;margin-top:8px;
+ max-width:100%;
+ max-height:230px;
+ border-radius:12px;
+ margin-top:10px;
+ display:block;
 }
-.message iframe{width:100%;height:250px;border:0}
-.composer-area{padding:12px 15px 18px}
+
+/* COMPOSER */
+.composer-wrap{
+ padding:15px 20px 20px;
+}
 .composer{
- max-width:780px;margin:auto;
- border:1px solid var(--border);border-radius:18px;
- background:var(--bg);padding:10px;
- box-shadow:0 2px 12px #0000000a;
+ max-width:820px;
+ margin:auto;
+ padding:13px 14px;
+ background:var(--panel);
+ border:1px solid var(--border);
+ border-radius:19px;
+ box-shadow:0 10px 40px #00000018;
+ transition:.2s;
+}
+.composer:focus-within{
+ border-color:#8b5cf6;
+ box-shadow:0 0 0 3px #8b5cf61a;
 }
 #prompt{
- width:100%;resize:none;min-height:48px;max-height:150px;
- border:0;outline:0;background:transparent;
- color:var(--text);font-size:16px;padding:10px;
+ width:100%;
+ min-height:45px;
+ max-height:150px;
+ resize:none;
+ background:transparent;
+ color:var(--text);
+ border:0;outline:0;
+ font-size:15px;
+ padding:9px 5px;
 }
-.tools{display:flex;justify-content:space-between;align-items:center}
-.tool-left,.tool-right{display:flex;gap:7px}
-.tool{
- border:0;background:var(--panel);color:var(--text);
- border-radius:10px;padding:10px;cursor:pointer;
+#prompt::placeholder{color:var(--muted)}
+.composer-bottom{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ margin-top:7px;
 }
-.send{
- background:var(--accent);color:white;
- border:0;border-radius:10px;padding:10px 16px;
- cursor:pointer;font-weight:bold;
+.tools{display:flex;gap:8px}
+.tool-btn{
+ border:1px solid var(--border);
+ background:var(--bg);
+ color:var(--muted);
+ padding:9px 12px;
+ border-radius:10px;
+ font-size:13px;
 }
-.note{text-align:center;color:var(--muted);font-size:11px;margin-top:10px}
+.tool-btn:hover{color:var(--text);border-color:var(--accent)}
+.send-btn{
+ background:linear-gradient(110deg,#8750f3,#367cf5);
+ border:0;
+ border-radius:11px;
+ color:white;
+ padding:10px 17px;
+ font-weight:650;
+}
+.file-label{
+ font-size:11px;
+ color:var(--muted);
+ padding:5px;
+}
+.footer-note{
+ text-align:center;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:12px;
+}
+
+/* MOBILE */
+.menu-toggle{display:none}
 #fileInput{display:none}
-#fileList{font-size:12px;color:var(--muted);padding:5px}
-.modal-bg{
- position:fixed;inset:0;background:#0009;
- display:none;align-items:center;justify-content:center;
- padding:15px;z-index:10;
+
+@media(max-width:750px){
+ .sidebar{
+  position:fixed;
+  left:-280px;
+  top:0;bottom:0;
+ }
+ .sidebar.open{left:0}
+ .menu-toggle{display:inline-block}
+ .topbar{padding:0 13px;height:62px}
+ .chat-area{padding:16px 12px}
+ .welcome{margin-top:7vh}
+ .orb{width:70px;height:70px}
+ .suggestions{gap:9px;margin:25px auto}
+ .suggestion{padding:13px}
+ .suggestion strong{font-size:12px}
+ .suggestion small{font-size:10px}
+ .composer-wrap{padding:10px}
+ .tool-btn{padding:9px}
+ .version{display:none}
 }
-.modal{
- background:var(--bg);color:var(--text);
- border:1px solid var(--border);border-radius:15px;
- padding:22px;width:100%;max-width:420px;
-}
-.modal input{
- width:100%;padding:12px;margin:8px 0 15px;
- border:1px solid var(--border);border-radius:9px;
- background:var(--panel);color:var(--text);
-}
-.modal button{margin:4px}
-@media(max-width:650px){
- .sidebar{width:75px;padding:9px}
- .logo{font-size:14px;margin:12px 0 20px}
- .logo span{display:none}
- .sidebtn{font-size:0;text-align:center;padding:13px 3px}
- .sidebtn::first-letter{font-size:18px}
- .history{display:none}
- .sidebar-bottom{font-size:10px}
- .topbar{padding:0 10px}
- .topbar strong{font-size:14px}
- .smallbtn{padding:8px;font-size:12px}
- .welcome h1{font-size:24px}
+@media(max-width:380px){
+ .suggestions{grid-template-columns:1fr}
+ .top-title{font-size:14px}
 }
 </style>
 </head>
@@ -158,183 +374,236 @@ body{
 <body>
 <div class="app">
 
-<aside class="sidebar">
- <div class="logo">Smart <span>Assistant AI</span></div>
-
- <button class="sidebtn" onclick="newChat()">＋ New Chat</button>
- <button class="sidebtn" onclick="document.getElementById('fileInput').click()">📎 Attach File</button>
-
- <div class="history">
-  <h4>RECENT CHATS</h4>
-  <div id="historyList"></div>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div>Smart <span>Assistant AI</span></div>
  </div>
 
+ <button class="new-chat" onclick="newChat()">＋ New Chat</button>
+
+ <div class="side-label">WORKSPACE</div>
+ <div class="side-item active">✧ &nbsp; AI Assistant</div>
+ <div class="side-item" onclick="chooseFile()">▧ &nbsp; My Files</div>
+ <div class="side-item" onclick="exportPDF()">▤ &nbsp; Export Chat PDF</div>
+
+ <div class="side-label">RECENT CHATS</div>
+ <div class="history" id="history"></div>
+
  <div class="sidebar-bottom">
-  <button class="sidebtn" onclick="toggleTheme()">🌙 Change Theme</button>
-  <button class="sidebtn" onclick="openAdmin()">⚙ Admin Panel</button>
-  <button class="sidebtn" onclick="showAbout()">ⓘ About</button>
+  <div class="side-item" onclick="toggleTheme()">◐ &nbsp; Change Theme</div>
+  <div class="side-item" onclick="openAdmin()">⚙ &nbsp; Admin Panel</div>
+  <div class="side-item" onclick="about()">ⓘ &nbsp; About</div>
  </div>
 </aside>
 
+<!-- MAIN -->
 <main class="main">
+
  <header class="topbar">
-  <strong>Smart Assistant AI</strong>
-  <div class="top-actions">
-   <button class="smallbtn" onclick="exportPDF()">📄 PDF</button>
-   <button class="smallbtn" onclick="newChat()">＋ New</button>
+  <div class="top-left">
+   <button class="icon-btn menu-toggle" onclick="toggleSidebar()">☰</button>
+   <div class="top-title">Smart Assistant AI</div>
+   <div class="version">PREMIUM UI</div>
+  </div>
+  <div class="top-right">
+   <button class="icon-btn" onclick="toggleTheme()">◐</button>
+   <button class="icon-btn" onclick="newChat()">＋</button>
   </div>
  </header>
 
- <section class="chat" id="chat">
-  <div class="welcome" id="welcome">
-   <div class="welcome-icon">✦</div>
-   <h1>How can I help you today?</h1>
-   <p>Your Smart Assistant for everyday tasks.</p>
-  </div>
-  <div class="messages" id="messages"></div>
- </section>
+ <section class="chat-area" id="chatArea">
 
- <section class="composer-area">
-  <div class="composer">
-   <textarea id="prompt" placeholder="Message Smart Assistant AI..."></textarea>
-   <div id="fileList"></div>
-   <div class="tools">
-    <div class="tool-left">
-     <button class="tool" onclick="document.getElementById('fileInput').click()">＋</button>
-     <button class="tool" onclick="startVoice()">🎤</button>
+  <div class="welcome" id="welcome">
+   <div class="orb">✦</div>
+   <h1>How can I help <span class="gradient-text">you today?</span></h1>
+   <p>Your ideas, your creativity, your personal AI assistant.</p>
+
+   <div class="suggestions">
+    <div class="suggestion" onclick="useSuggestion('Help me write something')">
+     <div class="emoji">✍️</div>
+     <strong>Write something</strong>
+     <small>Letters, stories and messages</small>
     </div>
-    <div class="tool-right">
-     <button class="send" onclick="sendMessage()">Send ↑</button>
+    <div class="suggestion" onclick="useSuggestion('Explain a difficult topic simply')">
+     <div class="emoji">🎓</div>
+     <strong>Learn something</strong>
+     <small>Understand topics step by step</small>
+    </div>
+    <div class="suggestion" onclick="useSuggestion('Help me with a creative idea')">
+     <div class="emoji">💡</div>
+     <strong>Creative ideas</strong>
+     <small>Explore new possibilities</small>
+    </div>
+    <div class="suggestion" onclick="useSuggestion('Help me with coding')">
+     <div class="emoji">💻</div>
+     <strong>Code assistant</strong>
+     <small>Explore programming concepts</small>
     </div>
    </div>
   </div>
+
+  <div class="messages" id="messages"></div>
+ </section>
+
+ <!-- INPUT -->
+ <section class="composer-wrap">
+  <div class="composer">
+   <textarea id="prompt" placeholder="Message Smart Assistant AI..."></textarea>
+   <div id="fileNames" class="file-label"></div>
+
+   <div class="composer-bottom">
+    <div class="tools">
+     <button class="tool-btn" onclick="chooseFile()">＋ Attach</button>
+     <button class="tool-btn" onclick="startVoice()">🎤 Voice</button>
+    </div>
+    <button class="send-btn" onclick="sendMessage()">Send ↑</button>
+   </div>
+  </div>
+
   <input type="file" id="fileInput" multiple
    accept="image/*,video/*,.pdf,.txt,.doc,.docx">
-  <div class="note">Smart Assistant AI • Preview Version</div>
+  <div class="footer-note">
+   Smart Assistant AI can make mistakes. Check important information.
+  </div>
  </section>
 </main>
 </div>
 
-<div class="modal-bg" id="modalBg">
- <div class="modal">
-  <h3 id="modalTitle">Information</h3>
-  <div id="modalContent"></div>
-  <button class="send" onclick="closeModal()">Close</button>
- </div>
-</div>
-
 <script>
-let selectedFiles=[];
-let chatHistory=[];
-let currentMessages=[];
+let files=[];
+let chats=[];
+let current=[];
 
 const promptBox=document.getElementById("prompt");
 const fileInput=document.getElementById("fileInput");
 
-function showModal(title,content){
- document.getElementById("modalTitle").textContent=title;
- document.getElementById("modalContent").innerHTML=content;
- document.getElementById("modalBg").style.display="flex";
+function toggleSidebar(){
+ document.getElementById("sidebar").classList.toggle("open");
 }
-function closeModal(){
- document.getElementById("modalBg").style.display="none";
-}
+
 function toggleTheme(){
- document.body.classList.toggle("dark");
+ document.body.classList.toggle("light");
  localStorage.setItem("smartTheme",
- document.body.classList.contains("dark")?"dark":"light");
+ document.body.classList.contains("light")?"light":"dark");
 }
-if(localStorage.getItem("smartTheme")==="dark"){
- document.body.classList.add("dark");
-}
-
-function newChat(){
- if(currentMessages.length){
-  chatHistory.unshift({
-   title:currentMessages[0].text.slice(0,35)||"New Chat",
-   messages:currentMessages
-  });
-  renderHistory();
- }
- currentMessages=[];
- document.getElementById("messages").innerHTML="";
- document.getElementById("welcome").style.display="block";
- selectedFiles=[];
- document.getElementById("fileList").textContent="";
- promptBox.value="";
+if(localStorage.getItem("smartTheme")==="light"){
+ document.body.classList.add("light");
 }
 
-function renderHistory(){
- const box=document.getElementById("historyList");
- box.innerHTML="";
- chatHistory.forEach((chat,index)=>{
-  const item=document.createElement("div");
-  item.className="history-item";
-  item.textContent="💬 "+chat.title;
-  item.onclick=()=>loadHistory(index);
-  box.appendChild(item);
- });
+function useSuggestion(text){
+ promptBox.value=text;
+ promptBox.focus();
 }
-function loadHistory(index){
- currentMessages=chatHistory[index].messages.map(m=>({...m}));
- document.getElementById("messages").innerHTML="";
- document.getElementById("welcome").style.display="none";
- currentMessages.forEach(m=>renderMessage(m));
+
+function chooseFile(){
+ fileInput.click();
 }
 
 fileInput.addEventListener("change",()=>{
- selectedFiles=Array.from(fileInput.files);
- document.getElementById("fileList").textContent=
- selectedFiles.map(f=>"📎 "+f.name).join("   ");
+ files=Array.from(fileInput.files);
+ document.getElementById("fileNames").textContent=
+ files.map(f=>"📎 "+f.name).join("   ");
 });
 
-function renderMessage(data){
+function newChat(){
+ if(current.length){
+  chats.unshift({
+   title:current[0].text||"New Chat",
+   messages:current
+  });
+  renderHistory();
+ }
+ current=[];
+ files=[];
+ fileInput.value="";
+ promptBox.value="";
+ document.getElementById("fileNames").textContent="";
+ document.getElementById("messages").innerHTML="";
+ document.getElementById("welcome").style.display="block";
+ document.getElementById("sidebar").classList.remove("open");
+}
+
+function renderHistory(){
+ const history=document.getElementById("history");
+ history.innerHTML="";
+ chats.forEach((chat,index)=>{
+  const item=document.createElement("div");
+  item.className="history-item";
+  item.textContent="◦ "+chat.title.slice(0,30);
+  item.onclick=()=>loadChat(index);
+  history.appendChild(item);
+ });
+}
+
+function loadChat(index){
+ current=chats[index].messages.map(x=>({...x}));
+ document.getElementById("messages").innerHTML="";
+ document.getElementById("welcome").style.display="none";
+ current.forEach(renderMessage);
+}
+
+function renderMessage(msg){
  const row=document.createElement("div");
- row.className="message "+data.role;
+ row.className="message "+msg.role;
+
  const avatar=document.createElement("div");
  avatar.className="avatar";
- avatar.textContent=data.role==="user"?"You":"AI";
- const content=document.createElement("div");
- content.className="message-content";
- const text=document.createElement("div");
- text.textContent=data.text;
- content.appendChild(text);
+ avatar.textContent=msg.role==="user"?"U":"✦";
 
- if(data.files){
-  data.files.forEach(file=>{
-   const label=document.createElement("p");
-   label.textContent="📎 "+file.name;
-   content.appendChild(label);
+ const body=document.createElement("div");
+ body.className="message-body";
+
+ const name=document.createElement("div");
+ name.className="message-name";
+ name.textContent=msg.role==="user"?"You":"Smart Assistant";
+
+ const text=document.createElement("div");
+ text.className="message-text";
+ text.textContent=msg.text;
+
+ body.append(name,text);
+
+ if(msg.files){
+  msg.files.forEach(f=>{
+   const label=document.createElement("div");
+   label.textContent="📎 "+f.name;
+   label.style.marginTop="8px";
+   body.appendChild(label);
   });
  }
- row.appendChild(avatar);
- row.appendChild(content);
+
+ row.append(avatar,body);
  document.getElementById("messages").appendChild(row);
- document.getElementById("chat").scrollTop=
- document.getElementById("chat").scrollHeight;
+ document.getElementById("chatArea").scrollTop=
+ document.getElementById("chatArea").scrollHeight;
 }
 
 function sendMessage(){
  const text=promptBox.value.trim();
- if(!text&&!selectedFiles.length)return;
+ if(!text&&!files.length)return;
 
  document.getElementById("welcome").style.display="none";
 
- const files=selectedFiles.map(f=>({name:f.name}));
- const userMessage={role:"user",text,files};
- currentMessages.push(userMessage);
- renderMessage(userMessage);
+ const user={
+  role:"user",
+  text:text,
+  files:files.map(f=>({name:f.name}))
+ };
+ current.push(user);
+ renderMessage(user);
 
  promptBox.value="";
- selectedFiles=[];
+ files=[];
  fileInput.value="";
- document.getElementById("fileList").textContent="";
+ document.getElementById("fileNames").textContent="";
 
  const reply={
   role:"ai",
-  text:"This is the Smart Assistant preview. Real AI answers and file processing will be enabled after connecting a secure AI backend."
+  text:"This is the Smart Assistant AI preview. Connect a secure AI backend to enable real AI conversations and file processing."
  };
- currentMessages.push(reply);
+ current.push(reply);
  renderMessage(reply);
 }
 
@@ -346,64 +615,70 @@ promptBox.addEventListener("keydown",e=>{
 });
 
 function startVoice(){
- const SpeechRecognition=
- window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SpeechRecognition){
+ const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!Speech){
   alert("Voice input is not supported in this browser.");
   return;
  }
- const recognition=new SpeechRecognition();
- recognition.lang="ur-PK";
- recognition.onresult=e=>{
+ const rec=new Speech();
+ rec.lang="ur-PK";
+ rec.onresult=e=>{
   promptBox.value+=e.results[0][0].transcript;
  };
- recognition.start();
+ rec.start();
 }
 
 function exportPDF(){
- const content=currentMessages.map(m=>
+ const text=current.map(m=>
  (m.role==="user"?"You: ":"AI: ")+m.text
  ).join("\n\n");
- const win=window.open("","_blank");
- if(!win){
-  alert("Please allow pop-ups to create PDF.");
+
+ const w=window.open("","_blank");
+ if(!w){
+  alert("Please allow pop-ups.");
   return;
  }
- const safe=content.replace(/[&<>"]/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"
+ const safe=text.replace(/[&<>"]/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"
  }[c]));
- win.document.write(
- "<html><head><title>Smart Assistant Chat</title></head>"+
- "<body style='font-family:Arial;padding:30px;white-space:pre-wrap'>"+
- "<h2>Smart Assistant AI</h2><hr>"+safe+
- "</body></html>"
+ w.document.write(
+  "<html><head><title>Smart Assistant Chat</title></head>"+
+  "<body style='font-family:Arial;padding:30px;white-space:pre-wrap'>"+
+  "<h2>Smart Assistant AI</h2><hr>"+safe+"</body></html>"
  );
- win.document.close();
- win.print();
+ w.document.close();
+ w.print();
 }
 
 function openAdmin(){
- showModal("Admin Panel",
- "<p>This is a local preview of the Admin Panel.</p>"+
- "<label>Maximum users (demo)</label>"+
- "<input id='maxUsers' type='number' min='1' value='100'>"+
- "<label>Daily message limit (demo)</label>"+
- "<input id='dailyLimit' type='number' min='1' value='30'>"+
- "<button class='send' onclick='saveAdmin()'>Save Settings</button>"+
- "<p id='adminStatus'></p>");
+ showDialog("Admin Panel",
+ "This is a preview only. Secure admin controls require a backend and server-side authentication.");
 }
-function saveAdmin(){
- const users=document.getElementById("maxUsers").value;
- const limit=document.getElementById("dailyLimit").value;
- localStorage.setItem("demoUsers",users);
- localStorage.setItem("demoLimit",limit);
- document.getElementById("adminStatus").textContent=
- "Demo settings saved on this device.";
+
+function about(){
+ showDialog("About Smart Assistant AI",
+ "A modern AI assistant interface. Real AI services will be connected in a future stage.");
 }
-function showAbout(){
- showModal("About Smart Assistant AI",
- "<p>Smart Assistant AI is a project designed to help users with everyday tasks.</p>"+
- "<p>Version: 1.0 Preview</p>");
+
+function showDialog(title,message){
+ const box=document.createElement("div");
+ box.style.cssText=
+ "position:fixed;inset:0;background:#000b;display:grid;place-items:center;z-index:20;padding:20px";
+ const card=document.createElement("div");
+ card.style.cssText=
+ "background:var(--panel);color:var(--text);padding:25px;border-radius:18px;max-width:380px;width:100%;border:1px solid var(--border)";
+ const h=document.createElement("h3");
+ h.textContent=title;
+ const p=document.createElement("p");
+ p.textContent=message;
+ p.style.lineHeight="1.7";
+ const btn=document.createElement("button");
+ btn.textContent="Close";
+ btn.className="send-btn";
+ btn.onclick=()=>box.remove();
+ card.append(h,p,btn);
+ box.appendChild(card);
+ document.body.appendChild(box);
 }
 </script>
 </body>
