@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Assistant AI</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f3f6fb;
+  color: #172033;
+}
+
+header {
+  background: #101c35;
+  color: white;
+  padding: 18px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 25px;
+}
+
+header p {
+  color: #cbd5e1;
+  margin-top: 7px;
+}
+
+nav {
+  background: #1e3155;
+  padding: 13px;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 8px;
+  font-size: 14px;
+}
+
+.hero {
+  padding: 45px 18px;
+  text-align: center;
+  background: linear-gradient(135deg,#162b50,#2563eb);
+  color: white;
+}
+
+.hero h2 {
+  font-size: 30px;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  line-height: 1.7;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 22px;
+}
+
+.section-title {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 24px;
+}
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 17px;
+}
+
+.card {
+  background: white;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px #00000012;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  color: #1d4ed8;
+}
+
+.card p {
+  color: #64748b;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 17px;
+  border-radius: 8px;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+textarea, input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.result {
+  background: #eff6ff;
+  padding: 13px;
+  margin-top: 12px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+footer {
+  background: #101c35;
+  color: white;
+  text-align: center;
+  padding: 22px;
+  margin-top: 30px;
+  line-height: 1.8;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #pdfText, #pdfText * {
+    visibility: visible;
+  }
+  #pdfText {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white;
+    color: black;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>✨ Smart Assistant AI</h1>
+  <p>Your All-in-One Smart Assistant</p>
+</header>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#tools">Tools</a>
+  <a href="#pdf">PDF Maker</a>
+  <a href="#media">Media</a>
+</nav>
+
+<section class="hero" id="home">
+  <h2>Welcome to Smart Assistant</h2>
+  <p>ایک ہی جگہ پر آپ کے روزمرہ کے ضروری ڈیجیٹل ٹولز۔</p>
+  <p>Online اور Offline سہولیات کا ایک نیا تجربہ۔</p>
+  <button onclick="document.getElementById('tools').scrollIntoView()">
+    Get Started
+  </button>
+</section>
+
+<div class="container" id="tools">
+  <h2 class="section-title">Our Smart Tools</h2>
+
+  <div class="tools">
+
+    <div class="card">
+      <h3>🤖 AI Assistant</h3>
+      <p>اپنا سوال لکھیں۔ فی الحال یہ ڈیمو انٹرفیس ہے۔</p>
+      <textarea id="question" placeholder="اپنا سوال لکھیں..."></textarea>
+      <button onclick="askAI()">Send Question</button>
+      <div class="result" id="answer">AI جواب یہاں ظاہر ہوگا۔</div>
+    </div>
+
+    <div class="card" id="pdf">
+      <h3>📄 PDF Maker</h3>
+      <p>اپنی تحریر لکھیں اور اسے PDF میں محفوظ کریں۔</p>
+      <textarea id="pdfText" placeholder="اپنی تحریر یہاں لکھیں..."></textarea>
+      <button onclick="makePDF()">Create PDF</button>
+    </div>
+
+    <div class="card" id="media">
+      <h3>📷 Photo & Video</h3>
+      <p>اپنے موبائل سے تصویر یا ویڈیو منتخب کرکے دیکھیں۔</p>
+      <input type="file" id="mediaFile" accept="image/*,video/*">
+      <div id="preview" class="result">آپ کی فائل کا Preview یہاں آئے گا۔</div>
+    </div>
+
+    <div class="card">
+      <h3>📝 Smart Notes</h3>
+      <p>اپنے اہم نوٹس لکھیں اور اپنے موبائل میں محفوظ کریں۔</p>
+      <textarea id="notes" placeholder="اپنے نوٹس لکھیں..."></textarea>
+      <button onclick="saveNotes()">Save Notes</button>
+      <button onclick="loadNotes()">Load Notes</button>
+      <div id="noteStatus"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <h3>Smart Assistant AI</h3>
+  <p>Created with dedication ❤️</p>
+  <p>© 2026 Smart Assistant. All Rights Reserved.</p>
+</footer>
+
+<script>
+function askAI() {
+  const question = document.getElementById("question").value.trim();
+
+  if (!question) {
+    alert("براہ کرم اپنا سوال لکھیں۔");
+    return;
+  }
+
+  document.getElementById("answer").innerText =
+    "یہ ابھی ڈیمو ورژن ہے۔ AI سروس منسلک ہونے کے بعد آپ کو حقیقی جواب ملے گا۔";
+}
+
+function makePDF() {
+  const text = document.getElementById("pdfText").value.trim();
+
+  if (!text) {
+    alert("پہلے اپنی تحریر لکھیں۔");
+    return;
+  }
+
+  window.print();
+}
+
+document.getElementById("mediaFile").addEventListener("change", function() {
+  const file = this.files[0];
+  const preview = document.getElementById("preview");
+
+  if (!file) return;
+
+  const url = URL.createObjectURL(file);
+  preview.innerHTML = "";
+
+  if (file.type.startsWith("image/")) {
+    const img = document.createElement("img");
+    img.src = url;
+    img.style.maxWidth = "100%";
+    img.style.borderRadius = "8px";
+    preview.appendChild(img);
+  } else if (file.type.startsWith("video/")) {
+    const video = document.createElement("video");
+    video.src = url;
+    video.controls = true;
+    video.style.width = "100%";
+    preview.appendChild(video);
+  }
+});
+
+function saveNotes() {
+  const notes = document.getElementById("notes").value;
+  localStorage.setItem("smartAssistantNotes", notes);
+  document.getElementById("noteStatus").innerText = "Notes محفوظ ہوگئے۔";
+}
+
+function loadNotes() {
+  document.getElementById("notes").value =
+    localStorage.getItem("smartAssistantNotes") || "";
+}
+</script>
+
+</body>
+</html>
