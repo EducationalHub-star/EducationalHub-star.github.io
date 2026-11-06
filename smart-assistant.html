@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Assistant AI</title>
+<title>AI Smart Teacher</title>
 <style>
 :root{--bg:#090b14;--side:#0e1120;--panel:#151a2b;--text:#f5f6ff;--muted:#9299b5;--border:#242a40;--accent:#8b5cf6;--blue:#3984ff;--bubble:#191f33}
 body.light{--bg:#f5f6fc;--side:#fff;--panel:#fff;--text:#17182a;--muted:#777e96;--border:#e4e6ef;--bubble:#edf0fa}
@@ -18,35 +18,30 @@ button,input{font:inherit}button{cursor:pointer}
 .side-item{padding:12px;border-radius:10px;color:var(--muted);cursor:pointer;font-size:14px}.side-item:hover{background:var(--panel);color:var(--text)}
 .history{flex:1;overflow:auto;min-height:0}
 .history-row{display:flex;align-items:center;gap:4px;margin:2px 0;border-radius:10px}.history-row.active{background:var(--panel)}
-.history-item{flex:1;min-width:0;padding:10px;color:var(--muted);font-size:13px;cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border:0;background:transparent;text-align:left;border-radius:8px}
-.history-item:hover{background:var(--panel);color:var(--text)}.history-row.active .history-item{color:var(--text)}
-.delete-chat{flex:0 0 auto;margin-right:5px;padding:7px 9px;color:var(--muted);background:transparent;border:0;border-radius:8px}.delete-chat:hover,.delete-chat:focus-visible{color:#f87171;background:var(--bg)}
+.history-item{flex:1;min-width:0;padding:10px;color:var(--muted);font-size:13px;cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border:0;background:transparent;text-align:left}.history-item:hover{background:var(--panel);color:var(--text)}.history-row.active .history-item{color:var(--text)}
+.delete-chat{flex:0 0 auto;margin-right:5px;padding:7px 9px;color:var(--muted);background:transparent;border:0;border-radius:8px}.delete-chat:hover,.delete-chat:focus-visible{color:#f87171;background:rgba(248,113,113,.08)}
 .bottom{border-top:1px solid var(--border);padding-top:10px}
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
 .topbar{min-height:65px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:8px}
 .top-actions{display:flex;gap:8px;align-items:center}.icon-btn{background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px}
-.login-btn{background:transparent;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px}.signup-btn{background:linear-gradient(110deg,#8750f3,#367cf5);color:white;border:0;border-radius:10px;padding:10px 13px}
+.login-btn{background:transparent;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px}.signup-btn{background:linear-gradient(110deg,#8750f3,#367cf5);color:white;border:0;border-radius:10px;padding:10px}
 .chat-area{flex:1;overflow:auto;padding:20px}.welcome{text-align:center;margin:8vh auto 25px;max-width:700px}
 .orb{width:75px;height:75px;border-radius:25px;display:grid;place-items:center;margin:auto auto 22px;font-size:35px;background:linear-gradient(135deg,#8b5cf6,#287bfa);box-shadow:0 0 45px #7849ed55}
 .welcome h1{font-size:clamp(26px,4vw,40px)}.gradient{background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;color:transparent}.welcome p{color:var(--muted)}
-.suggestions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:600px;margin:30px auto}.suggestion{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:left;cursor:pointer}.suggestion:hover{border-color:var(--accent)}.suggestion b{display:block;margin:10px 0 5px}.suggestion small{color:var(--muted)}
-.messages{max-width:800px;margin:auto}.message{display:flex;gap:12px;margin:22px 0}.avatar{width:34px;height:34px;flex-shrink:0;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#3478ff);color:white}.message-body{max-width:88%}.message-name{font-size:12px;color:var(--muted);margin-bottom:7px}.message-text{background:var(--bubble);border:1px solid var(--border);padding:13px 16px;border-radius:5px 14px 14px 14px;line-height:1.7;overflow-wrap:anywhere}
-.composer-wrap{padding:12px 15px 18px}.composer{max-width:800px;margin:auto;background:var(--panel);border:1px solid var(--border);border-radius:17px;padding:12px}.composer:focus-within{border-color:var(--accent)}
-textarea{width:100%;min-height:45px;max-height:130px;resize:vertical;background:transparent;color:var(--text);border:0;outline:0;font-size:15px;padding:8px}.composer-bottom{display:flex;justify-content:space-between;gap:8px}
-.tool{background:var(--bg);border:1px solid var(--border);color:var(--muted);border-radius:9px;padding:9px}.send{background:linear-gradient(110deg,#8750f3,#367cf5);color:white;border:0;border-radius:9px;padding:10px 16px}.note{text-align:center;color:var(--muted);font-size:10px;margin-top:10px}#fileInput{display:none}
-.modal-bg{display:none;position:fixed;inset:0;background:#000b;z-index:20;align-items:center;justify-content:center;padding:15px}.modal{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:23px;width:100%;max-width:390px}.modal h2{margin-top:0}.modal input{width:100%;padding:12px;margin:8px 0 13px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text)}.modal .primary{width:100%;margin-top:10px}.modal p{color:var(--muted);font-size:13px;line-height:1.5}.switch{color:#a78bfa;cursor:pointer}#authMessage{font-size:13px;margin-top:10px;overflow-wrap:anywhere}
-.user-status{font-size:11px;color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.suggestions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:600px;margin:30px auto}.suggestion{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:left;cursor:pointer}.suggestion small{display:block;color:var(--muted);margin-top:6px}
+.messages{max-width:800px;margin:auto}.message{display:flex;gap:12px;margin:22px 0}.avatar{width:34px;height:34px;flex-shrink:0;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#287bfa);font-weight:bold}.message-body{flex:1;min-width:0;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px}.message-name{font-size:12px;color:var(--muted);margin-bottom:6px}.message-text{white-space:pre-wrap;line-height:1.5}.composer-wrap{padding:12px 15px 18px}.composer{max-width:800px;margin:auto;background:var(--panel);border:1px solid var(--border);border-radius:17px;padding:12px}.composer:focus-within{border-color:rgba(139,92,246,.75)}
+textarea{width:100%;min-height:45px;max-height:130px;resize:vertical;background:transparent;color:var(--text);border:0;outline:0;font-size:15px;padding:8px}.composer-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px}.tool{background:var(--bg);border:1px solid var(--border);color:var(--muted);border-radius:9px;padding:9px}.send{background:linear-gradient(110deg,#8750f3,#367cf5);color:white;border:0;border-radius:10px;padding:10px 14px;font-weight:bold}
+.modal-bg{display:none;position:fixed;inset:0;background:#000b;z-index:20;align-items:center;justify-content:center;padding:15px}.modal{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:22px;max-width:420px;width:100%}.modal input{width:100%;margin:8px 0 14px;padding:11px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text)}.switch{color:#8bb4ff;cursor:pointer}.modal #authMessage{min-height:20px;color:#f87171;font-size:13px;margin:8px 0}.user-status{font-size:11px;color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .menu{display:none}
-@media(max-width:700px){.sidebar{position:fixed;left:0;top:0;bottom:0;z-index:5;transform:translateX(-105%);max-width:85vw;height:100vh}.sidebar.open{transform:translateX(0)}.menu{display:inline-block}.topbar{padding:0 10px}.chat-area{padding:12px}.welcome{margin-top:7vh}.suggestions{gap:8px}.suggestion{padding:12px}.suggestion small{font-size:10px}.user-status{display:none}.history-row{gap:2px}.history-item{padding:12px 9px;min-height:44px}.delete-chat{min-width:40px;min-height:40px}}
-</style>
+@media(max-width:700px){.sidebar{position:fixed;left:0;top:0;bottom:0;z-index:5;transform:translateX(-105%);max-width:85vw;height:100vh}.sidebar.open{transform:translateX(0)}.menu{display:inline-block}.topbar{padding:0 12px}.top-actions{gap:6px}.login-btn,.signup-btn,.icon-btn{padding:8px 10px}.chat-area{padding:14px}.welcome h1{font-size:clamp(22px,7vw,32px)}.suggestions{grid-template-columns:1fr}.user-status{display:none}}</style>
 </head>
 <body>
 <div class="app">
 <aside class="sidebar" id="sidebar">
- <div class="brand">✦ Smart <span>Assistant AI</span></div>
+ <div class="brand">✦ AI Smart <span>Teacher</span></div>
  <button class="new-chat" onclick="newChat()">＋ New Chat</button>
  <div class="side-label">WORKSPACE</div>
- <div class="side-item">✧ AI Assistant</div>
+ <div class="side-item">✧ AI Smart Teacher</div>
  <div class="side-item" onclick="chooseFile()">▧ My Files</div>
  <div class="side-item" onclick="exportPDF()">▤ Export PDF</div>
  <div class="side-label" id="historyHeading">RECENT CHATS</div>
@@ -57,7 +52,7 @@ textarea{width:100%;min-height:45px;max-height:130px;resize:vertical;background:
 <header class="topbar">
  <div style="display:flex;gap:12px;align-items:center">
   <button class="icon-btn menu" title="Open menu" aria-label="Open menu" onclick="toggleSidebar()">⋮</button>
-  <b>Smart Assistant AI</b>
+  <b>AI Smart Teacher</b>
  </div>
  <div class="top-actions">
   <button class="icon-btn" type="button" onclick="showHistory()" aria-label="Show chat history">History</button>
@@ -70,7 +65,7 @@ textarea{width:100%;min-height:45px;max-height:130px;resize:vertical;background:
 </header>
 <section class="chat-area" id="chatArea">
  <div class="welcome" id="welcome">
-  <div class="orb">✦</div><h1>How can I help <span class="gradient">you today?</span></h1><p>Your ideas, your creativity, your personal AI assistant.</p>
+  <div class="orb">✦</div><h1>Welcome to <span class="gradient">AI Smart Teacher</span></h1><p>Your study goals, ideas, and learning journey with a personal AI Smart Teacher.</p>
   <div class="suggestions">
    <div class="suggestion" onclick="suggest('Help me write something')">✍️ <b>Write something</b><small>Letters and messages</small></div>
    <div class="suggestion" onclick="suggest('Explain a topic simply')">🎓 <b>Learn something</b><small>Understand topics</small></div>
@@ -81,11 +76,11 @@ textarea{width:100%;min-height:45px;max-height:130px;resize:vertical;background:
  <div class="messages" id="messages"></div>
 </section>
 <section class="composer-wrap">
- <div class="composer"><textarea id="prompt" placeholder="Message Smart Assistant AI..."></textarea><div id="fileNames" style="font-size:11px;color:var(--muted)"></div>
-  <div class="composer-bottom"><div style="display:flex;gap:7px"><button class="tool" onclick="chooseFile()">＋ Attach</button><button class="tool" onclick="voice()">🎤 Voice</button></div><button class="send" type="button" onclick="sendMessage()">Send ↑</button></div>
+ <div class="composer"><textarea id="prompt" placeholder="Message AI Smart Teacher..."></textarea><div id="fileNames" style="font-size:11px;color:var(--muted)"></div>
+  <div class="composer-bottom"><div style="display:flex;gap:7px"><button class="tool" onclick="chooseFile()">＋ Attach</button><button class="tool" onclick="voice()">🎤 Voice</button></div><button class="send" onclick="sendMessage()">Send</button></div>
  </div>
  <input type="file" id="fileInput" multiple accept="image/*,video/*,.pdf,.txt,.doc,.docx">
- <div class="note">Smart Assistant AI • Guest Mode Available</div>
+ <div class="note">AI Smart Teacher • Guest Mode Available</div>
 </section>
 </main>
 </div>
@@ -108,174 +103,174 @@ let authMode="login";
 function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
 function closeSidebar(){document.getElementById("sidebar").classList.remove("open")}
 function showHistory(){
- const sidebar=document.getElementById("sidebar");
- sidebar.classList.add("open");
- renderHistory();
- document.getElementById("historyHeading").scrollIntoView({block:"nearest"});
+  const sidebar=document.getElementById("sidebar");
+  sidebar.classList.add("open");
+  renderHistory();
+  document.getElementById("historyHeading").scrollIntoView({block:"nearest"});
 }
 function toggleTheme(){
- document.body.classList.toggle("light");
- try{localStorage.setItem("smartTheme",document.body.classList.contains("light")?"light":"dark")}
- catch(error){console.warn("Theme preference could not be saved.",error)}
+  document.body.classList.toggle("light");
+  try{localStorage.setItem("smartTheme",document.body.classList.contains("light")?"light":"dark")}
+  catch(error){console.warn("Theme preference could not be saved.",error)}
 }
 try{if(localStorage.getItem("smartTheme")==="light")document.body.classList.add("light")}
 catch(error){console.warn("Theme preference could not be loaded.",error)}
 function showAuth(mode){
- authMode=mode;document.getElementById("authModal").style.display="flex";document.getElementById("authMessage").textContent="";
- document.getElementById("authTitle").textContent=mode==="login"?"Welcome Back":"Create Your Account";
- document.getElementById("authDescription").textContent=mode==="login"?"Login to continue.":"Join Smart Assistant AI.";
- document.getElementById("nameField").style.display=mode==="signup"?"block":"none";
- document.getElementById("switchText").innerHTML=mode==="login"?'Don\'t have an account? <span class="switch" onclick="showAuth(\'signup\')">Sign Up</span>':'Already have an account? <span class="switch" onclick="showAuth(\'login\')">Login</span>';
+  authMode=mode;document.getElementById("authModal").style.display="flex";document.getElementById("authMessage").textContent="";
+  document.getElementById("authTitle").textContent=mode==="login"?"Welcome Back":"Create Your Account";
+  document.getElementById("authDescription").textContent=mode==="login"?"Login to continue.":"Join AI Smart Teacher.";
+  document.getElementById("nameField").style.display=mode==="signup"?"block":"none";
+  document.getElementById("switchText").innerHTML=mode==="login"?'Don\'t have an account? <span class="switch" onclick="showAuth(\'signup\')">Sign Up</span>':'Already have an account? <span class="switch" onclick="showAuth(\'login\')">Login</span>';
 }
 function closeAuth(){document.getElementById("authModal").style.display="none"}
 function submitAuth(){if(window.firebaseAuthSubmit)window.firebaseAuthSubmit(authMode);else document.getElementById("authMessage").textContent="Firebase is loading. Please try again."}
 function suggest(text){document.getElementById("prompt").value=text;document.getElementById("prompt").focus()}
 function chooseFile(){document.getElementById("fileInput").click()}
 document.getElementById("fileInput").addEventListener("change",e=>{
- files=Array.from(e.target.files);
- document.getElementById("fileNames").textContent=files.map(f=>"📎 "+f.name).join("   ");
+  files=Array.from(e.target.files);
+  document.getElementById("fileNames").textContent=files.map(f=>"📎 "+f.name).join("   ");
 });
 function makeChatId(){return window.crypto&&typeof window.crypto.randomUUID==="function"?window.crypto.randomUUID():"chat-"+Date.now()+"-"+Math.random().toString(36).slice(2)}
 function chatTitle(messages){const firstUser=messages.find(m=>m.role==="user");const title=firstUser&&firstUser.text?firstUser.text.trim():"New Chat";return title.slice(0,60)||"New Chat"}
 function persistChats(){
- try{localStorage.setItem(CHAT_STORAGE_KEY,JSON.stringify({chats,activeChatId}));return true}
- catch(error){console.warn("Chat history could not be saved in this browser.",error);return false}
+  try{localStorage.setItem(CHAT_STORAGE_KEY,JSON.stringify({chats,activeChatId}));return true}
+  catch(error){console.warn("Chat history could not be saved in this browser.",error);return false}
 }
 function saveCurrentChat(){
- if(!current.length)return;
- if(!activeChatId)activeChatId=makeChatId();
- const savedMessages=current.map(m=>({
-  role:m.role==="user"?"user":"ai",
-  text:typeof m.text==="string"?m.text:"",
-  files:Array.isArray(m.files)?m.files.map(f=>({name:String(f.name||"File")})):[]
- }));
- const index=chats.findIndex(c=>c.id===activeChatId);
- const chat={id:activeChatId,title:chatTitle(savedMessages),messages:savedMessages,updatedAt:Date.now()};
- if(index>=0)chats[index]=chat;else chats.push(chat);
- chats.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));persistChats();renderHistory();
+  if(!current.length)return;
+  if(!activeChatId)activeChatId=makeChatId();
+  const savedMessages=current.map(m=>({
+   role:m.role==="user"?"user":"ai",
+   text:typeof m.text==="string"?m.text:"",
+   files:Array.isArray(m.files)?m.files.map(f=>({name:String(f.name||"File")})):[]
+  }));
+  const index=chats.findIndex(c=>c.id===activeChatId);
+  const chat={id:activeChatId,title:chatTitle(savedMessages),messages:savedMessages,updatedAt:Date.now()};
+  if(index>=0)chats[index]=chat;else chats.push(chat);
+  chats.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));persistChats();renderHistory();
 }
-function cloneMessages(messages){return messages.map(m=>({role:m.role==="user"?"user":"ai",text:typeof m.text==="string"?m.text:"",files:Array.isArray(m.files)?m.files.map(f=>({name:String(f&&f.name||"File")})):[]}))}
+function cloneMessages(messages){return messages.map(m=>({role:m.role==="user"?"user":"ai",text:typeof m.text==="string"?m.text:"",files:Array.isArray(m.files)?m.files.map(f=>({name:String(f&&f.name||"File")})):[ ]}));}
 function restoreChats(){
- try{
-  const saved=localStorage.getItem(CHAT_STORAGE_KEY);
-  if(saved){
-   const parsed=JSON.parse(saved);
-   const savedChats=Array.isArray(parsed)?parsed:parsed&&parsed.chats;
-   if(Array.isArray(savedChats)){
-    const seen=new Set();
-    chats=savedChats.filter(c=>c&&Array.isArray(c.messages)).map(c=>{
-     let id=String(c.id||makeChatId());if(seen.has(id))id=makeChatId();seen.add(id);
-     const messages=cloneMessages(c.messages.filter(m=>m&&typeof m==="object"));
-     return{id,title:typeof c.title==="string"?c.title:chatTitle(messages),messages,updatedAt:Number(c.updatedAt)||0};
-    });
+  try{
+   const saved=localStorage.getItem(CHAT_STORAGE_KEY);
+   if(saved){
+    const parsed=JSON.parse(saved);
+    const savedChats=Array.isArray(parsed)?parsed:parsed&&parsed.chats;
+    if(Array.isArray(savedChats)){
+     const seen=new Set();
+     chats=savedChats.filter(c=>c&&Array.isArray(c.messages)).map(c=>{
+      let id=String(c.id||makeChatId());if(seen.has(id))id=makeChatId();seen.add(id);
+      const messages=cloneMessages(c.messages.filter(m=>m&&typeof m==="object"));
+      return{id,title:typeof c.title==="string"?c.title:chatTitle(messages),messages,updatedAt:Number(c.updatedAt)||0};
+     });
+    }
+    activeChatId=!Array.isArray(parsed)&&parsed&&parsed.activeChatId?String(parsed.activeChatId):null;
    }
-   activeChatId=!Array.isArray(parsed)&&parsed&&parsed.activeChatId?String(parsed.activeChatId):null;
-  }
- }catch(error){console.warn("Saved chat history could not be loaded.",error);chats=[];activeChatId=null}
- if(!chats.some(c=>c.id===activeChatId))activeChatId=null;
- renderHistory();
- const active=chats.find(c=>c.id===activeChatId);
- if(active){current=cloneMessages(active.messages);renderCurrentChat()}else{current=[];showWelcome()}
+  }catch(error){console.warn("Saved chat history could not be loaded.",error);chats=[];activeChatId=null}
+  if(!chats.some(c=>c.id===activeChatId))activeChatId=null;
+  renderHistory();
+  const active=chats.find(c=>c.id===activeChatId);
+  if(active){current=cloneMessages(active.messages);renderCurrentChat()}else{current=[];showWelcome()}
 }
 function showWelcome(){document.getElementById("messages").replaceChildren();document.getElementById("welcome").style.display="block"}
 function renderCurrentChat(){
- const messageContainer=document.getElementById("messages");
- messageContainer.replaceChildren();
- document.getElementById("welcome").style.display=current.length?"none":"block";
- current.forEach(renderMessage);
+  const messageContainer=document.getElementById("messages");
+  messageContainer.replaceChildren();
+  document.getElementById("welcome").style.display=current.length?"none":"block";
+  current.forEach(renderMessage);
 }
 function newChat(){
- saveCurrentChat();current=[];activeChatId=null;files=[];
- document.getElementById("messages").replaceChildren();document.getElementById("welcome").style.display="block";
- document.getElementById("prompt").value="";document.getElementById("fileNames").textContent="";document.getElementById("fileInput").value="";
- persistChats();renderHistory();closeSidebar();
+  saveCurrentChat();current=[];activeChatId=null;files=[];
+  document.getElementById("messages").replaceChildren();document.getElementById("welcome").style.display="block";
+  document.getElementById("prompt").value="";document.getElementById("fileNames").textContent="";document.getElementById("fileInput").value="";
+  persistChats();renderHistory();closeSidebar();
 }
 function renderHistory(){
- const box=document.getElementById("history");box.replaceChildren();
- chats.forEach(chat=>{
-  const row=document.createElement("div");row.className="history-row"+(chat.id===activeChatId?" active":"");
-  const openButton=document.createElement("button");openButton.type="button";openButton.className="history-item";
-  openButton.textContent="◦ "+(chat.title||"New Chat").slice(0,40);openButton.title=chat.title||"New Chat";
-  openButton.setAttribute("aria-label","Open conversation: "+(chat.title||"New Chat"));openButton.addEventListener("click",()=>loadChat(chat.id));
-  const deleteButton=document.createElement("button");deleteButton.type="button";deleteButton.className="delete-chat";deleteButton.textContent="✕";deleteButton.title="Delete conversation";
-  deleteButton.setAttribute("aria-label","Delete conversation: "+(chat.title||"New Chat"));deleteButton.addEventListener("click",event=>{event.stopPropagation();deleteChat(chat.id)});
-  row.append(openButton,deleteButton);box.appendChild(row);
- });
+  const box=document.getElementById("history");box.replaceChildren();
+  chats.forEach(chat=>{
+   const row=document.createElement("div");row.className="history-row"+(chat.id===activeChatId?" active":"");
+   const openButton=document.createElement("button");openButton.type="button";openButton.className="history-item";
+   openButton.textContent="◦ "+(chat.title||"New Chat").slice(0,40);openButton.title=chat.title||"New Chat";
+   openButton.setAttribute("aria-label","Open conversation: "+(chat.title||"New Chat"));openButton.addEventListener("click",()=>loadChat(chat.id));
+   const deleteButton=document.createElement("button");deleteButton.type="button";deleteButton.className="delete-chat";deleteButton.textContent="✕";deleteButton.title="Delete conversation";
+   deleteButton.setAttribute("aria-label","Delete conversation: "+(chat.title||"New Chat"));deleteButton.addEventListener("click",event=>{event.stopPropagation();deleteChat(chat.id)});
+   row.append(openButton,deleteButton);box.appendChild(row);
+  });
 }
 function loadChat(id){
- const requestedId=String(id);let selected=chats.find(c=>c.id===requestedId);if(!selected)return;
- if(activeChatId&&activeChatId!==requestedId){saveCurrentChat();selected=chats.find(c=>c.id===requestedId);if(!selected)return}
- activeChatId=selected.id;current=cloneMessages(selected.messages);files=[];
- document.getElementById("prompt").value="";document.getElementById("fileNames").textContent="";document.getElementById("fileInput").value="";
- renderCurrentChat();persistChats();renderHistory();closeSidebar();
+  const requestedId=String(id);let selected=chats.find(c=>c.id===requestedId);if(!selected)return;
+  if(activeChatId&&activeChatId!==requestedId){saveCurrentChat();selected=chats.find(c=>c.id===requestedId);if(!selected)return}
+  activeChatId=selected.id;current=cloneMessages(selected.messages);files=[];
+  document.getElementById("prompt").value="";document.getElementById("fileNames").textContent="";document.getElementById("fileInput").value="";
+  renderCurrentChat();persistChats();renderHistory();closeSidebar();
 }
 function deleteChat(id){
- const chat=chats.find(c=>c.id===id);if(!chat||!window.confirm("Delete this conversation? This cannot be undone."))return;
- chats=chats.filter(c=>c.id!==id);
- if(activeChatId===id){activeChatId=null;current=[];files=[];document.getElementById("prompt").value="";document.getElementById("fileNames").textContent="";document.getElementById("fileInput").value="";showWelcome()}
- persistChats();renderHistory();
+  const chat=chats.find(c=>c.id===id);if(!chat||!window.confirm("Delete this conversation? This cannot be undone."))return;
+  chats=chats.filter(c=>c.id!==id);
+  if(activeChatId===id){activeChatId=null;current=[];files=[];document.getElementById("prompt").value="";document.getElementById("fileNames").textContent="";document.getElementById("fileInput").value="";document.getElementById("welcome").style.display="block";document.getElementById("messages").replaceChildren();}
+  persistChats();renderHistory();
 }
 function renderMessage(m){
- const row=document.createElement("div");row.className="message";
- const av=document.createElement("div");av.className="avatar";av.textContent=m.role==="user"?"U":"✦";
- const body=document.createElement("div");body.className="message-body";
- const name=document.createElement("div");name.className="message-name";name.textContent=m.role==="user"?"You":"Smart Assistant";
- const text=document.createElement("div");text.className="message-text";text.textContent=m.text;
- body.append(name,text);
- (m.files||[]).forEach(file=>{const attachment=document.createElement("p");attachment.textContent="📎 "+file.name;body.appendChild(attachment)});
- row.append(av,body);document.getElementById("messages").appendChild(row);document.getElementById("chatArea").scrollTop=999999;
+  const row=document.createElement("div");row.className="message";
+  const av=document.createElement("div");av.className="avatar";av.textContent=m.role==="user"?"U":"✦";
+  const body=document.createElement("div");body.className="message-body";
+  const name=document.createElement("div");name.className="message-name";name.textContent=m.role==="user"?"You":"AI Smart Teacher";
+  const text=document.createElement("div");text.className="message-text";text.textContent=m.text;
+  body.append(name,text);
+  (m.files||[]).forEach(file=>{const attachment=document.createElement("p");attachment.textContent="📎 "+file.name;body.appendChild(attachment)});
+  row.append(av,body);document.getElementById("messages").appendChild(row);document.getElementById("chatArea").scrollTop=999999;
 }
 function sendMessage(){
- const input=document.getElementById("prompt");const text=input.value.trim();
- if(!text&&!files.length)return;
- document.getElementById("welcome").style.display="none";
- const message={role:"user",text,files:files.map(file=>({name:file.name}))};current.push(message);renderMessage(message);
- input.value="";files=[];document.getElementById("fileInput").value="";document.getElementById("fileNames").textContent="";
- // Preserve the existing response/backend behavior; this change only restores the broken UI script.
- const reply={role:"ai",text:"Smart Assistant AI is currently in preview mode. Connect a secure AI backend to enable real AI answers and file processing."};
- current.push(reply);renderMessage(reply);saveCurrentChat();
+  const input=document.getElementById("prompt");const text=input.value.trim();
+  if(!text&&!files.length)return;
+  document.getElementById("welcome").style.display="none";
+  const message={role:"user",text,files:files.map(file=>({name:file.name}))};current.push(message);renderMessage(message);
+  input.value="";files=[];document.getElementById("fileInput").value="";document.getElementById("fileNames").textContent="";
+  // Preserve the existing response/backend behavior; this change only restores the broken UI script.
+  const reply={role:"ai",text:"AI Smart Teacher is currently in preview mode. Connect a secure AI backend to enable real AI answers and file processing."};
+  current.push(reply);renderMessage(reply);saveCurrentChat();
 }
 document.getElementById("prompt").addEventListener("keydown",event=>{if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();sendMessage()}});
 function voice(){
- const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!Speech){alert("Voice input is not supported in this browser.");return}
- const recognition=new Speech();recognition.lang="ur-PK";
- recognition.onresult=event=>{document.getElementById("prompt").value+=event.results[0][0].transcript};recognition.start();
+  const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!Speech){alert("Voice input is not supported in this browser.");return}
+  const recognition=new Speech();recognition.lang="ur-PK";
+  recognition.onresult=event=>{document.getElementById("prompt").value+=event.results[0][0].transcript};recognition.start();
 }
 function exportPDF(){
- const text=current.map(m=>(m.role==="user"?"You: ":"AI: ")+m.text).join("\n\n");const win=window.open("","_blank");
- if(!win){alert("Allow pop-ups to print PDF.");return}
- const safe=text.replace(/[&<>\"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
- win.document.write("<html><body style='font-family:Arial;padding:30px;white-space:pre-wrap'><h2>Smart Assistant AI</h2><hr>"+safe+"</body></html>");win.document.close();win.print();
+  const text=current.map(m=>(m.role==="user"?"You: ":"AI: ")+m.text).join("\n\n");const win=window.open("","_blank");
+  if(!win){alert("Allow pop-ups to print PDF.");return}
+  const safe=text.replace(/[&<>\"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[char]));
+  win.document.write("<html><body style='font-family:Arial;padding:30px;white-space:pre-wrap'><h2>AI Smart Teacher</h2><hr>"+safe+"</body></html>");win.document.close();win.print();
 }
-function about(){alert("Smart Assistant AI - Firebase Preview Version")}
+function about(){alert("AI Smart Teacher - Firebase Preview Version")}
 restoreChats();
 </script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
-const firebaseConfig={apiKey:"AIzaSyDd93BzxLrr8gVWhPvfEEwYdpr_Jh4p4dk",authDomain:"smart-assistant-ai-91edd.firebaseapp.com",projectId:"smart-assistant-ai-91edd",storageBucket:"smart-assistant-ai-91edd.firebasestorage.app",messagingSenderId:"49402555214",appId:"1:49402555214:web:e81f34ca56d81dbd34cc1f"};
+const firebaseConfig={apiKey:"AIzaSyDd93BzxLrr8gVWhPvfEEwYdpr_Jh4p4dk",authDomain:"smart-assistant-ai-91edd.firebaseapp.com",projectId:"smart-assistant-ai-91edd",storageBucket:"smart-assistant-ai-91edd.appspot.com",messagingSenderId:"85666228802",appId:"1:85666228802:web:4b2bb32ac24c0a1239f7e2f"};
 const app=initializeApp(firebaseConfig);const auth=getAuth(app);
 window.firebaseAuthSubmit=async function(mode){
- const email=document.getElementById("authEmail").value.trim();const password=document.getElementById("authPassword").value;const name=document.getElementById("authName").value.trim();
- const message=document.getElementById("authMessage");const button=document.getElementById("authSubmitButton");message.style.color="#f87171";
- if(!email||!password||(mode==="signup"&&!name)){message.textContent="Please complete all required fields.";return}
- if(password.length<6){message.textContent="Password must be at least 6 characters.";return}
- button.disabled=true;button.textContent="Please wait...";message.textContent="Connecting to Firebase...";
- try{
-  if(mode==="signup"){const result=await createUserWithEmailAndPassword(auth,email,password);await updateProfile(result.user,{displayName:name});message.style.color="#22c55e";message.textContent="Account created successfully!"}
-  else{await signInWithEmailAndPassword(auth,email,password);message.style.color="#22c55e";message.textContent="Login successful!"}
-  setTimeout(()=>{document.getElementById("authModal").style.display="none"},1200);
- }catch(error){
-  const errors={"auth/email-already-in-use":"This email is already registered.","auth/invalid-email":"Please enter a valid email.","auth/weak-password":"Password must be at least 6 characters.","auth/invalid-credential":"Email or password is incorrect.","auth/user-not-found":"No account found with this email.","auth/wrong-password":"Incorrect password.","auth/network-request-failed":"Check your internet connection.","auth/too-many-requests":"Too many attempts. Try again later.","auth/operation-not-allowed":"Enable Email/Password in Firebase Authentication."};
-  message.textContent=errors[error.code]||"Error: "+error.code;
- }finally{button.disabled=false;button.textContent="Continue"}
+  const email=document.getElementById("authEmail").value.trim();const password=document.getElementById("authPassword").value;const name=document.getElementById("authName").value.trim();
+  const message=document.getElementById("authMessage");const button=document.getElementById("authSubmitButton");message.style.color="#f87171";
+  if(!email||!password||(mode==="signup"&&!name)){message.textContent="Please complete all required fields.";return}
+  if(password.length<6){message.textContent="Password must be at least 6 characters.";return}
+  button.disabled=true;button.textContent="Please wait...";message.textContent="Connecting to Firebase...";
+  try{
+   if(mode==="signup"){const result=await createUserWithEmailAndPassword(auth,email,password);await updateProfile(result.user,{displayName:name});message.style.color="#22c55e";message.textContent="Account created successfully!"}
+   else{await signInWithEmailAndPassword(auth,email,password);message.style.color="#22c55e";message.textContent="Login successful!"}
+   setTimeout(()=>{document.getElementById("authModal").style.display="none"},1200);
+  }catch(error){
+   const errors={"auth/email-already-in-use":"This email is already registered.","auth/invalid-email":"Please enter a valid email.","auth/weak-password":"Password must be at least 6 characters.","auth/user-not-found":"No account found for this email.","auth/wrong-password":"Incorrect password."};
+   message.textContent=errors[error.code]||"Error: "+error.code;
+  }finally{button.disabled=false;button.textContent="Continue"}
 };
 window.logoutUser=async function(){try{await signOut(auth);alert("You have logged out.")}catch(error){alert("Logout error: "+error.message)}};
 onAuthStateChanged(auth,user=>{
- const status=document.getElementById("userStatus");const login=document.getElementById("loginButton");const signup=document.getElementById("signupButton");const logout=document.getElementById("logoutButton");
- if(user){status.textContent=user.displayName||user.email||"Signed In";login.style.display="none";signup.style.display="none";logout.style.display="inline-block"}
- else{status.textContent="Guest Mode";login.style.display="inline-block";signup.style.display="inline-block";logout.style.display="none"}
+  const status=document.getElementById("userStatus");const login=document.getElementById("loginButton");const signup=document.getElementById("signupButton");const logout=document.getElementById("logoutButton");
+  if(user){status.textContent=user.displayName||user.email||"Signed In";login.style.display="none";signup.style.display="none";logout.style.display="inline-block"}
+  else{status.textContent="Guest Mode";login.style.display="inline-block";signup.style.display="inline-block";logout.style.display="none"}
 });
 </script>
 </body>
