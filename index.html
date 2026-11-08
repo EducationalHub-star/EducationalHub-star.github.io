@@ -9,6 +9,10 @@
 <title>Educational Hub</title>
 <meta name="description" content="Educational Hub - Learning, knowledge and useful applications.">
 
+<!-- PWA Manifest -->
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./assets/icon-192.png">
+
 <style>
 * {
   margin: 0;
@@ -43,9 +47,7 @@ body {
   gap: 12px;
 }
 
-.brand-icon {
-  font-size: 43px;
-}
+.brand-icon { font-size: 43px; }
 
 .brand h1 {
   font-size: 25px;
@@ -149,9 +151,7 @@ body {
 }
 
 /* PROFILE */
-.profile-area {
-  text-align: center;
-}
+.profile-area { text-align: center; }
 
 .profile-frame {
   width: 300px;
@@ -331,6 +331,24 @@ body {
   line-height: 1.7;
 }
 
+/* INSTALL BUTTON */
+.install-area {
+  text-align: center;
+  padding: 10px 15px 35px;
+}
+
+.install-btn {
+  display: none;
+  background: #0759c7;
+  color: white;
+  border: none;
+  padding: 14px 25px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 /* FOOTER */
 footer {
   background: #061e49;
@@ -393,9 +411,7 @@ footer p {
   }
 
   .brand-icon { font-size: 36px; }
-
   .brand h1 { font-size: 22px; }
-
   .brand p { font-size: 11px; }
 
   .nav {
@@ -452,9 +468,7 @@ footer p {
 
   .profile-area h3 { font-size: 22px; }
 
-  .app-section {
-    padding: 38px 15px;
-  }
+  .app-section { padding: 38px 15px; }
 
   .section-heading h2 { font-size: 27px; }
 
@@ -505,9 +519,7 @@ footer p {
   }
 
   .feature-icon { font-size: 27px; }
-
   .feature h3 { font-size: 14px; }
-
   .feature p { font-size: 12px; }
 
   .about {
@@ -519,7 +531,6 @@ footer p {
   }
 
   .about-icon { font-size: 48px; }
-
   .about h2 { font-size: 21px; }
 
   .about p {
@@ -533,7 +544,6 @@ footer p {
 /* SMALL PHONES */
 @media (max-width: 360px) {
   .brand h1 { font-size: 19px; }
-
   .hero h2 { font-size: 30px; }
 
   .profile-frame {
@@ -546,9 +556,7 @@ footer p {
     text-align: center;
   }
 
-  .app-icon {
-    width: 85px;
-  }
+  .app-icon { width: 85px; }
 }
 </style>
 </head>
@@ -572,7 +580,6 @@ footer p {
 </header>
 
 <section class="hero" id="home">
-
   <div class="hero-text">
     <span class="hero-tag">Learn · Explore · Grow</span>
 
@@ -600,18 +607,15 @@ footer p {
     <h3>Educational Hub</h3>
     <p>Learn · Improve · Succeed</p>
   </div>
-
 </section>
 
 <section class="app-section" id="apps">
-
   <div class="section-heading">
     <h2>My Applications</h2>
     <p>Useful tools to support your learning journey</p>
   </div>
 
   <div class="app-grid">
-
     <div class="app-card">
       <div class="app-icon">🧮</div>
 
@@ -622,8 +626,7 @@ footer p {
           scientific and physics formulas.
         </p>
 
-        <a class="app-btn"
-           href="scientific-calculator.html">
+        <a class="app-btn" href="scientific-calculator.html">
           Open Calculator →
         </a>
       </div>
@@ -639,17 +642,13 @@ footer p {
           will be added here soon.
         </p>
 
-        <a class="app-btn" href="#apps">
-          Coming Soon
-        </a>
+        <a class="app-btn" href="#apps">Coming Soon</a>
       </div>
     </div>
-
   </div>
 </section>
 
 <section class="features">
-
   <div class="feature">
     <div class="feature-icon">🎓</div>
     <h3>Easy Learning</h3>
@@ -673,7 +672,6 @@ footer p {
     <h3>Mobile Friendly</h3>
     <p>Use on your phone or computer.</p>
   </div>
-
 </section>
 
 <section class="about" id="about">
@@ -689,11 +687,51 @@ footer p {
   </div>
 </section>
 
+<!-- APP INSTALL BUTTON -->
+<div class="install-area">
+  <button class="install-btn" id="installBtn">
+    📲 Install Educational Hub
+  </button>
+</div>
+
 <footer>
   <h2>EDUCATIONAL HUB</h2>
   <p>Learning · Knowledge · Technology</p>
   <p>All Rights Reserved © 2026</p>
 </footer>
+
+<!-- SERVICE WORKER REGISTRATION -->
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(error => console.log("Service Worker Error:", error));
+  });
+}
+
+/* INSTALL APP */
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredPrompt = event;
+  installBtn.style.display = "inline-block";
+});
+
+installBtn.addEventListener("click", async () => {
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  installBtn.style.display = "none";
+});
+
+window.addEventListener("appinstalled", () => {
+  installBtn.style.display = "none";
+});
+</script>
 
 </body>
 </html>
