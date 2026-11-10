@@ -1,224 +1,657 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Smart Teacher</title>
+<meta name="theme-color" content="#f5f7ff">
+<title>Smart AI Teacher</title>
+
 <style>
+:root{
+ --bg:#f4f6fc;
+ --panel:#ffffff;
+ --text:#17213b;
+ --muted:#75819a;
+ --border:#e5e9f2;
+ --primary:#6555df;
+ --primary2:#8778f2;
+ --soft:#eeecff;
+ --board:#153c35;
+ --shadow:0 5px 25px rgba(35,45,80,.06);
+}
+body.dark{
+ --bg:#101522;
+ --panel:#1a2232;
+ --text:#edf1ff;
+ --muted:#a0abc1;
+ --border:#303b50;
+ --primary:#9b8cff;
+ --primary2:#7665e9;
+ --soft:#302b50;
+ --board:#102f2b;
+ --shadow:0 5px 25px rgba(0,0,0,.2);
+}
 *{box-sizing:border-box}
-body{margin:0;background:#f4f6fb;color:#172033;font-family:Arial,sans-serif}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:Arial,sans-serif;transition:.2s;
+}
+button,select{cursor:pointer;font-family:inherit}
 .app{display:flex;min-height:100vh}
-.sidebar{width:250px;background:#111a2d;color:white;padding:16px;flex-shrink:0}
-.brand{font-size:19px;font-weight:bold;margin:10px 0 22px}
-button,select{cursor:pointer}
-.newchat,.navbtn{width:100%;padding:12px;border:0;border-radius:9px;margin:4px 0;text-align:left}
-.newchat{background:#263653;color:white}
-.navbtn{background:transparent;color:#eee}
-.navbtn:hover{background:#263653}
-.history{margin-top:15px}
-.history button{background:transparent;color:#ddd;border:0;padding:8px;width:100%;text-align:left}
+.sidebar{
+ width:255px;background:var(--panel);
+ border-right:1px solid var(--border);
+ padding:19px;flex-shrink:0;
+}
+.brand{
+ font-size:21px;font-weight:bold;margin:8px 0 25px;
+ color:var(--primary);
+}
+.brand span{color:var(--text)}
+.newchat,.navbtn{
+ width:100%;padding:12px;border:0;
+ border-radius:10px;margin:5px 0;text-align:left;
+}
+.newchat{background:var(--primary);color:white;font-weight:bold}
+.navbtn{background:transparent;color:var(--text)}
+.navbtn:hover{background:var(--soft)}
+.side-label{
+ font-size:11px;color:var(--muted);
+ margin:25px 0 8px;font-weight:bold;
+ text-transform:uppercase;
+}
+.history button{
+ width:100%;padding:10px;border:0;
+ border-radius:8px;background:transparent;
+ color:var(--muted);text-align:left;
+ overflow:hidden;text-overflow:ellipsis;
+ white-space:nowrap;
+}
+.history button:hover{background:var(--soft);color:var(--text)}
 .main{flex:1;min-width:0}
-.topbar{height:60px;background:white;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.topbar{
+ height:68px;background:var(--panel);
+ border-bottom:1px solid var(--border);
+ display:flex;align-items:center;justify-content:space-between;
+ padding:0 25px;position:sticky;top:0;z-index:3;
+}
+.top-left{display:flex;align-items:center;gap:12px}
+.topbar b{font-size:16px}
+.top-actions{display:flex;align-items:center;gap:10px}
+.iconbtn,.smallbtn{
+ background:var(--panel);color:var(--text);
+ border:1px solid var(--border);border-radius:9px;
+ padding:9px 12px;
+}
 .menu{display:none}
-.content{max-width:1150px;margin:auto;padding:18px}
-h1{font-size:25px;margin:5px 0}
-p{color:#68758c}
-.selectors{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
-select{padding:10px;border:1px solid #ddd;border-radius:8px;background:white}
-.classroom{display:grid;grid-template-columns:260px 1fr;gap:12px}
-.card{background:white;border:1px solid #e3e8f1;border-radius:13px;padding:14px}
-.teacher{display:flex;align-items:center;gap:12px}
-.teacher img{width:85px;height:95px;object-fit:cover;border-radius:10px}
-.board{background:#123b32;color:white;min-height:230px}
-.board h3{border-bottom:1px solid #56776c;padding-bottom:10px}
-.board-body{white-space:pre-wrap;line-height:1.7}
-.below{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.subject-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.subject{padding:9px 3px;border:1px solid #ddd;border-radius:8px;background:#f7f7fb}
-.subject.active{background:#eeeaff;border-color:#8068e8}
-.notes{white-space:pre-wrap;line-height:1.6;min-height:70px}
-.chat{max-width:950px;margin:14px auto}
-.messages{display:flex;flex-direction:column;gap:9px}
-.bubble{background:white;border:1px solid #ddd;border-radius:10px;padding:12px}
-.composer{background:white;border:1px solid #ddd;border-radius:12px;padding:10px;margin-top:12px}
-textarea{width:100%;height:65px;border:0;outline:0;font:15px Arial;resize:vertical}
-.send{background:#7055df;color:white;border:0;border-radius:8px;padding:11px 18px}
-.smallbtn{background:#f5f5fa;border:1px solid #ddd;border-radius:8px;padding:8px}
+.content{max-width:1250px;margin:auto;padding:25px}
+.welcome{
+ display:flex;justify-content:space-between;
+ align-items:center;gap:15px;flex-wrap:wrap;
+}
+h1{font-size:27px;margin:5px 0}
+p{color:var(--muted);line-height:1.5}
+.eyebrow{
+ color:var(--primary);font-size:12px;
+ font-weight:bold;letter-spacing:1px;
+}
+.selectors{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:10px;margin:22px 0;
+}
+select{
+ width:100%;padding:12px;border:1px solid var(--border);
+ border-radius:10px;background:var(--panel);color:var(--text);
+}
+.card{
+ background:var(--panel);border:1px solid var(--border);
+ border-radius:15px;padding:17px;box-shadow:var(--shadow);
+ min-width:0;
+}
+.card h3{margin:0 0 14px;font-size:16px}
+.classroom{
+ display:grid;grid-template-columns:280px 1fr;gap:15px;
+}
+.teacher-card{
+ display:flex;align-items:center;gap:13px;
+}
+.avatar{
+ width:70px;height:70px;border-radius:17px;
+ display:grid;place-items:center;font-size:35px;
+ background:var(--soft);flex-shrink:0;
+}
+.teacher-info p{font-size:13px;margin:5px 0}
+.teacher-info b{font-size:15px}
+.board{
+ background:var(--board);color:white;
+ min-height:230px;border-radius:15px;padding:20px;
+}
+.board h3{color:#d8f5e9;border-bottom:1px solid #ffffff35;padding-bottom:12px}
+.board-body{white-space:pre-wrap;line-height:1.8}
+.below{
+ display:grid;grid-template-columns:1.1fr .9fr;
+ gap:15px;margin-top:15px;
+}
+.subject-grid{
+ display:grid;grid-template-columns:repeat(4,1fr);gap:9px;
+}
+.subject{
+ padding:12px 5px;border:1px solid var(--border);
+ border-radius:10px;background:var(--bg);
+ color:var(--text);font-size:12px;
+}
+.subject.active{
+ background:var(--soft);border-color:var(--primary);
+ color:var(--primary);font-weight:bold;
+}
+.notes{white-space:pre-wrap;line-height:1.7;min-height:75px;color:var(--muted)}
+.teacher-list{
+ display:flex;gap:9px;flex-wrap:wrap;margin-top:12px;
+}
+.teacher-option{
+ flex:1;min-width:100px;border:1px solid var(--border);
+ background:var(--bg);color:var(--text);
+ border-radius:10px;padding:12px 7px;
+}
+.teacher-option.active{
+ border:2px solid var(--primary);background:var(--soft);
+}
+.teacher-option span{display:block;font-size:24px;margin-bottom:7px}
+.chat{max-width:1000px;margin:17px auto}
+.messages{display:flex;flex-direction:column;gap:10px}
+.bubble{
+ background:var(--panel);border:1px solid var(--border);
+ border-radius:12px;padding:13px;line-height:1.7;
+ white-space:pre-wrap;overflow-wrap:anywhere;
+}
+.bubble.user{border-left:4px solid var(--primary)}
+.bubble.assistant{border-left:4px solid #25a77b}
+.composer{
+ background:var(--panel);border:1px solid var(--border);
+ border-radius:14px;padding:12px;margin-top:12px;
+}
+textarea{
+ width:100%;height:75px;border:0;outline:0;
+ background:transparent;color:var(--text);
+ font:15px Arial;resize:vertical;
+}
+.send{
+ background:var(--primary);color:white;border:0;
+ border-radius:9px;padding:11px 20px;font-weight:bold;
+}
+.fileline{font-size:12px;color:var(--muted);margin:7px 0}
+.composer-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.footer-note{text-align:center;font-size:12px;color:var(--muted);margin:25px}
+.hidden{display:none}
+@media(max-width:850px){
+ .selectors{grid-template-columns:repeat(2,1fr)}
+ .classroom{grid-template-columns:1fr}
+}
 @media(max-width:700px){
-.sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-105%);z-index:5;transition:.2s}
-.sidebar.open{transform:translateX(0)}
-.menu{display:inline-block}
-.classroom{grid-template-columns:1fr}
-.below{grid-template-columns:1fr}
-.content{padding:12px}
-.topbar{padding:0 10px}
-.subject-grid{grid-template-columns:repeat(4,1fr)}
+ .sidebar{
+ position:fixed;top:0;bottom:0;left:0;z-index:8;
+ transform:translateX(-105%);transition:.2s;
+ }
+ .sidebar.open{transform:translateX(0)}
+ .menu{display:inline-block}
+ .below{grid-template-columns:1fr}
+ .content{padding:14px}
+ .topbar{padding:0 12px}
+ .top-actions{gap:5px}
+ .topbar{height:60px}
+ h1{font-size:23px}
+ .subject-grid{grid-template-columns:repeat(4,1fr)}
+ .teacher-list{display:grid;grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
+
 <body>
 <div class="app">
+
 <aside class="sidebar" id="sidebar">
-<div class="brand">✦ AI Smart Teacher</div>
-<button class="newchat" onclick="newChat()">＋ New Chat</button>
-<div class="history" id="history"></div>
-<button class="navbtn" onclick="document.getElementById('fileInput').click()">＋ My Files</button>
-<button class="navbtn" onclick="printNotes()">Export Notes / PDF</button>
+ <div class="brand">✦ <span>Smart AI</span> Teacher</div>
+
+ <button class="newchat" onclick="newChat()">＋ New Lesson</button>
+
+ <div class="side-label">Learning</div>
+ <button class="navbtn" onclick="document.getElementById('subject').focus()">📚 All Subjects</button>
+ <button class="navbtn" onclick="document.getElementById('teacherSection').scrollIntoView()">👨‍🏫 Choose Teacher</button>
+ <button class="navbtn" onclick="document.getElementById('board').scrollIntoView()">▤ Digital Whiteboard</button>
+
+ <div class="side-label">My Learning History</div>
+ <div class="history" id="history"></div>
+
+ <div class="side-label">Tools</div>
+ <button class="navbtn" onclick="document.getElementById('fileInput').click()">＋ My Files</button>
+ <button class="navbtn" onclick="printNotes()">📄 Export Notes / PDF</button>
 </aside>
+
 <main class="main">
 <header class="topbar">
-<div><button class="menu" onclick="toggleMenu()">☰</button> <b>AI Smart Teacher</b></div>
-<div>Guest Mode</div>
+ <div class="top-left">
+  <button class="iconbtn menu" onclick="toggleMenu()">☰</button>
+  <b>✦ Smart AI Teacher</b>
+ </div>
+ <div class="top-actions">
+  <button class="iconbtn" onclick="toggleTheme()" id="themeButton">🌙 Dark</button>
+  <span style="font-size:12px;color:var(--muted)">Guest Mode</span>
+ </div>
 </header>
+
 <div class="content">
-<h1>Your Personal AI Classroom</h1>
-<p>Simple lessons, clear explanations and study notes.</p>
+
+<div class="welcome">
+ <div>
+  <div class="eyebrow">YOUR PERSONAL LEARNING SPACE</div>
+  <h1>Welcome to Your AI Classroom</h1>
+  <p>Learn step by step, understand concepts and ask questions.</p>
+ </div>
+</div>
+
 <div class="selectors">
-<select id="grade">
-<option>Class 1</option><option>Class 2</option><option>Class 3</option>
-<option>Class 4</option><option>Class 5</option><option>Class 6</option>
-<option>Class 7</option><option>Class 8</option><option>Class 9</option>
-<option>Class 10</option><option>Class 11</option><option>Class 12</option>
-<option>College</option><option>University</option>
-</select>
-<select id="subject">
-<option>Mathematics</option><option>Physics</option><option>Chemistry</option>
-<option>Biology</option><option>Computer Science</option><option>English</option>
-<option>Urdu</option><option>General Science</option>
-</select>
-<select id="language"><option>English</option><option>Urdu</option><option>Simple Urdu</option></select>
+ <select id="grade">
+  <option>Class 1</option><option>Class 2</option>
+  <option>Class 3</option><option>Class 4</option>
+  <option>Class 5</option><option>Class 6</option>
+  <option>Class 7</option><option>Class 8</option>
+  <option>Class 9</option><option>Class 10</option>
+  <option>Class 11</option><option>Class 12</option>
+  <option>College</option><option>University</option>
+ </select>
+
+ <select id="subject" onchange="updateTeacherList()">
+  <option>Mathematics</option>
+  <option>Physics</option>
+  <option>Chemistry</option>
+  <option>Biology</option>
+  <option>Computer Science</option>
+  <option>All Subjects</option>
+  <option>Pakistan Studies</option>
+  <option>Urdu</option><option>English</option>
+  <option>General Science</option>
+  <option>Psychology</option>
+  <option>Philosophy</option>
+  <option>Logic</option>
+  <option>Arabic</option>
+  <option>Dars-e-Nizami</option>
+  <option>Fiqh</option>
+  <option>Hadith</option>
+  <option>Tafsir</option>
+  <option>Islamic Studies</option>
+ </select>
+
+ <select id="language">
+  <option>Simple Urdu</option>
+  <option>Urdu</option>
+  <option>English</option>
+ </select>
+
+ <select id="mode">
+  <option value="Personal Teacher">Personal Teacher Mode</option>
+  <option value="Quick Solution">Quick Solution Mode</option>
+ </select>
 </div>
+
 <section class="classroom">
-<div class="card teacher">
-<img src="assets/teacher-photo.jpg" alt="Teacher photo" onerror="this.style.display='none'">
-<div><b>Your AI Teacher</b><p>Friendly learning for everyone.</p></div>
-</div>
-<div class="card board">
-<h3>▤ Digital Blackboard</h3>
-<div class="board-body" id="board">Your lesson will appear here. Ask a question below.</div>
-</div>
+ <div class="card teacher-card">
+  <div class="avatar" id="teacherAvatar">👨‍🏫</div>
+  <div class="teacher-info">
+   <b id="teacherName">Your AI Teacher</b>
+   <p id="teacherDescription">Friendly personal teaching</p>
+   <span style="font-size:11px;color:var(--primary)">● Selected Teacher</span>
+  </div>
+ </div>
+
+ <div class="board" id="board">
+  <h3>▤ Digital Whiteboard</h3>
+  <div class="board-body" id="boardBody">
+Your lesson will appear here.
+
+Ask your teacher a question to begin.
+  </div>
+ </div>
 </section>
+
 <section class="below">
+
 <div class="card">
-<h3>📚 Choose a subject</h3>
-<div class="subject-grid">
-<button class="subject active" onclick="chooseSubject('Mathematics')">Math</button>
-<button class="subject" onclick="chooseSubject('Physics')">Physics</button>
-<button class="subject" onclick="chooseSubject('Chemistry')">Chemistry</button>
-<button class="subject" onclick="chooseSubject('Biology')">Biology</button>
-<button class="subject" onclick="chooseSubject('Computer Science')">Computer</button>
-<button class="subject" onclick="chooseSubject('English')">English</button>
-<button class="subject" onclick="chooseSubject('Urdu')">Urdu</button>
-<button class="subject" onclick="chooseSubject('General Science')">Science</button>
+ <h3>📚 Choose a Subject</h3>
+ <div class="subject-grid">
+  <button class="subject active" onclick="chooseSubject('Mathematics')">➗ Math</button>
+  <button class="subject" onclick="chooseSubject('Physics')">⚛ Physics</button>
+  <button class="subject" onclick="chooseSubject('Chemistry')">🧪 Chemistry</button>
+  <button class="subject" onclick="chooseSubject('Biology')">🧬 Biology</button>
+  <button class="subject" onclick="chooseSubject('Computer Science')">💻 Computer</button>
+  <button class="subject" onclick="chooseSubject('English')">🔤 English</button>
+  <button class="subject" onclick="chooseSubject('Urdu')">📖 Urdu</button>
+  <button class="subject" onclick="chooseSubject('Pakistan Studies')">🇵🇰 Pakistan</button>
+ </div>
 </div>
-</div>
+
 <div class="card">
-<h3>📝 Study Notes</h3>
-<div class="notes" id="notes">Your study notes will appear here.</div>
-<button class="smallbtn" onclick="copyNotes()">Copy Notes</button>
-<button class="smallbtn" onclick="printNotes()">PDF / Print</button>
+ <h3>📝 Study Notes</h3>
+ <div class="notes" id="notes">Your study notes will appear here.</div>
+ <button class="smallbtn" onclick="copyNotes()">Copy Notes</button>
+ <button class="smallbtn" onclick="printNotes()">PDF / Print</button>
 </div>
+
 </section>
+
+<section class="card" id="teacherSection" style="margin-top:15px">
+ <h3>👨‍🏫 Choose Your Teacher</h3>
+ <p>Select a teaching style. You can change teachers whenever you want.</p>
+
+ <div class="teacher-list" id="teacherList">
+  <button class="teacher-option active" onclick="chooseTeacher('male')">
+   <span>👨‍🏫</span>Male Teacher
+  </button>
+  <button class="teacher-option" onclick="chooseTeacher('female')">
+   <span>👩‍🏫</span>Female Teacher
+  </button>
+  <button class="teacher-option" onclick="chooseTeacher('3d')">
+   <span>🤖</span>3D Teacher
+  </button>
+  <button class="teacher-option" onclick="chooseTeacher('senior')">
+   <span>👨‍🎓</span>Senior Teacher
+  </button>
+ </div>
+</section>
+
 <section class="chat">
-<div class="messages" id="messages"></div>
-<div class="composer">
-<textarea id="prompt" placeholder="Ask your teacher a question..."></textarea>
-<div id="fileline"></div>
-<button class="smallbtn" onclick="document.getElementById('fileInput').click()">＋ Attach Photo / File</button>
-<button class="smallbtn" onclick="voiceInput()">🎤 Voice</button>
-<button class="send" onclick="sendMessage()">Send ↑</button>
-<input id="fileInput" type="file" multiple accept="image/*,video/*,.pdf,.txt,.doc,.docx" hidden>
-</div>
+ <div class="messages" id="messages"></div>
+
+ <div class="composer">
+  <textarea id="prompt" placeholder="Ask your teacher a question..."></textarea>
+  <div class="fileline" id="fileline"></div>
+
+  <div class="composer-actions">
+   <button class="smallbtn" onclick="document.getElementById('fileInput').click()">＋ Attach Photo / PDF</button>
+   <button class="smallbtn" onclick="voiceInput()">🎤 Voice</button>
+   <button class="send" onclick="sendMessage()">Send ↑</button>
+   <input id="fileInput" type="file" multiple
+    accept="image/*,video/*,.pdf,.txt,.doc,.docx" hidden>
+  </div>
+ </div>
 </section>
+
+<div class="footer-note">
+ Smart AI Teacher • Learn at your own pace
+</div>
+
 </div>
 </main>
 </div>
+
 <script>
 const KEY="smartAssistantChats";
-let chats=[],current=[],activeId=null,selectedFiles=[];
-function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}
-function closeMenu(){document.getElementById("sidebar").classList.remove("open")}
+const THEME_KEY="smartTeacherTheme";
+
+let chats=[];
+let current=[];
+let activeId=null;
+let selectedFiles=[];
+let selectedTeacher="male";
+
+const teachers={
+ male:{name:"Mr. Ahmed",avatar:"👨‍🏫",description:"Friendly and patient teacher"},
+ female:{name:"Ms. Ayesha",avatar:"👩‍🏫",description:"Clear and supportive teacher"},
+ "3d":{name:"3D AI Teacher",avatar:"🤖",description:"Animated teaching style"},
+ senior:{name:"Senior Professor",avatar:"👨‍🎓",description:"Detailed academic explanations"}
+};
+
+function toggleMenu(){
+ document.getElementById("sidebar").classList.toggle("open");
+}
+function closeMenu(){
+ document.getElementById("sidebar").classList.remove("open");
+}
+
+function toggleTheme(){
+ document.body.classList.toggle("dark");
+ const dark=document.body.classList.contains("dark");
+ localStorage.setItem(THEME_KEY,dark?"dark":"light");
+ document.getElementById("themeButton").textContent=
+ dark?"☀️ Light":"🌙 Dark";
+}
+
+function loadTheme(){
+ const theme=localStorage.getItem(THEME_KEY)||"light";
+ document.body.classList.toggle("dark",theme==="dark");
+ document.getElementById("themeButton").textContent=
+ theme==="dark"?"☀️ Light":"🌙 Dark";
+}
+
 function saveChat(){
  if(!current.length)return;
  if(!activeId)activeId=Date.now().toString();
- let title=(current.find(m=>m.role==="user")?.text||"New Chat").slice(0,45);
- let old=chats.findIndex(c=>c.id===activeId);
+
+ let first=current.find(m=>m.role==="user");
+ let title=(first?.text||"New Lesson").slice(0,45);
+ let index=chats.findIndex(c=>c.id===activeId);
+
  let item={id:activeId,title,messages:current};
- if(old<0)chats.unshift(item);else chats[old]=item;
- localStorage.setItem(KEY,JSON.stringify(chats));renderHistory();
+
+ if(index<0)chats.unshift(item);
+ else chats[index]=item;
+
+ localStorage.setItem(KEY,JSON.stringify(chats));
+ renderHistory();
 }
+
 function renderHistory(){
- let h=document.getElementById("history");h.innerHTML="";
+ const h=document.getElementById("history");
+ h.innerHTML="";
+
  chats.forEach(c=>{
- let b=document.createElement("button");b.textContent="• "+c.title;
- b.onclick=()=>openChat(c.id);h.appendChild(b);
+  const b=document.createElement("button");
+  b.textContent="• "+c.title;
+  b.onclick=()=>openChat(c.id);
+  h.appendChild(b);
  });
 }
+
 function openChat(id){
- let c=chats.find(x=>x.id===id);if(!c)return;
- activeId=id;current=c.messages||[];renderMessages();
- let last=[...current].reverse().find(m=>m.role==="assistant");
- if(last){document.getElementById("board").textContent=last.text;document.getElementById("notes").textContent=last.text}
+ const c=chats.find(x=>x.id===id);
+ if(!c)return;
+
+ activeId=id;
+ current=c.messages||[];
+ renderMessages();
+
+ const last=[...current].reverse().find(m=>m.role==="assistant");
+ if(last){
+  document.getElementById("boardBody").textContent=last.text;
+  document.getElementById("notes").textContent=last.text;
+ }
+
  closeMenu();
 }
+
 function newChat(){
- saveChat();current=[];activeId=null;renderMessages();
- document.getElementById("board").textContent="Your new lesson will appear here.";
- document.getElementById("notes").textContent="Your study notes will appear here.";
- document.getElementById("prompt").value="";closeMenu();
+ saveChat();
+ current=[];
+ activeId=null;
+ renderMessages();
+
+ document.getElementById("boardBody").textContent=
+ "Your new lesson will appear here.";
+ document.getElementById("notes").textContent=
+ "Your study notes will appear here.";
+ document.getElementById("prompt").value="";
+ closeMenu();
 }
+
 function renderMessages(){
- let box=document.getElementById("messages");box.innerHTML="";
+ const box=document.getElementById("messages");
+ box.innerHTML="";
+
  current.forEach(m=>{
- let d=document.createElement("div");d.className="bubble";
- d.textContent=(m.role==="user"?"You: ":"AI Teacher: ")+m.text;box.appendChild(d);
+  const d=document.createElement("div");
+  d.className="bubble "+(m.role==="user"?"user":"assistant");
+  d.textContent=(m.role==="user"?"You: ":"AI Teacher: ")+m.text;
+  box.appendChild(d);
  });
 }
-function chooseSubject(s){
- document.getElementById("subject").value=s;
- document.querySelectorAll(".subject").forEach(b=>b.classList.toggle("active",b.textContent.toLowerCase().startsWith(s.toLowerCase().split(" ")[0])));
+
+function chooseSubject(subject){
+ document.getElementById("subject").value=subject;
+
+ document.querySelectorAll(".subject").forEach(b=>{
+  b.classList.toggle(
+   "active",
+   b.textContent.toLowerCase().startsWith(subject.toLowerCase().split(" ")[0])
+  );
+ });
+
+ updateTeacherList();
 }
+
+function updateTeacherList(){
+ const subject=document.getElementById("subject").value;
+ const description=document.getElementById("teacherDescription");
+
+ description.textContent="Teaching "+subject+" in a simple way.";
+}
+
+function chooseTeacher(type){
+ selectedTeacher=type;
+ const t=teachers[type];
+
+ document.getElementById("teacherName").textContent=t.name;
+ document.getElementById("teacherAvatar").textContent=t.avatar;
+ document.getElementById("teacherDescription").textContent=t.description;
+
+ document.querySelectorAll(".teacher-option").forEach((b,i)=>{
+  b.classList.toggle(
+   "active",
+   ["male","female","3d","senior"][i]===type
+  );
+ });
+}
+
 document.getElementById("fileInput").addEventListener("change",e=>{
  selectedFiles=Array.from(e.target.files);
- document.getElementById("fileline").textContent=selectedFiles.map(f=>f.name).join(", ");
+ document.getElementById("fileline").textContent=
+ selectedFiles.map(f=>f.name).join(", ");
 });
+
 async function sendMessage(){
- let input=document.getElementById("prompt"),q=input.value.trim();
+ const input=document.getElementById("prompt");
+ const q=input.value.trim();
+
  if(!q&&!selectedFiles.length)return;
- current.push({role:"user",text:q||"Please explain the attached file."});
- renderMessages();input.value="";
- let answer="PREVIEW MODE\n\nYour question: "+q+
- "\nSubject: "+document.getElementById("subject").value+
- "\nClass: "+document.getElementById("grade").value+
- "\nLanguage: "+document.getElementById("language").value+
- "\n\nThe design is ready. Connect a secure AI backend to enable real AI answers and file understanding.";
+
+ const fileNames=selectedFiles.map(f=>f.name);
+
+ const userText=q||"Please explain my attached file.";
+ current.push({role:"user",text:userText});
+
+ renderMessages();
+ input.value="";
+
+ const subject=document.getElementById("subject").value;
+ const grade=document.getElementById("grade").value;
+ const language=document.getElementById("language").value;
+ const mode=document.getElementById("mode").value;
+ const teacher=teachers[selectedTeacher];
+
+ let answer=
+ "PREVIEW MODE\n\n"+
+ "Teacher: "+teacher.name+"\n"+
+ "Subject: "+subject+"\n"+
+ "Class: "+grade+"\n"+
+ "Language: "+language+"\n"+
+ "Teaching Mode: "+mode+"\n\n"+
+ "Your question: "+userText+"\n\n"+
+ (fileNames.length?
+ "Attached files: "+fileNames.join(", ")+"\n\n":
+ "")+
+ "This is a design preview. The real AI teaching service and file understanding will work after connecting a secure AI backend.";
+
  current.push({role:"assistant",text:answer});
- document.getElementById("board").textContent=answer;
+
+ document.getElementById("boardBody").textContent=answer;
  document.getElementById("notes").textContent=answer;
- selectedFiles=[];document.getElementById("fileline").textContent="";
+
+ selectedFiles=[];
+ document.getElementById("fileline").textContent="";
  document.getElementById("fileInput").value="";
- renderMessages();saveChat();
+
+ renderMessages();
+ saveChat();
 }
+
 document.getElementById("prompt").addEventListener("keydown",e=>{
- if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}
+ if(e.key==="Enter"&&!e.shiftKey){
+  e.preventDefault();
+  sendMessage();
+ }
 });
+
 function voiceInput(){
- let R=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!R){alert("Voice input is not supported in this browser.");return}
- let r=new R();r.lang=document.getElementById("language").value==="English"?"en-US":"ur-PK";
- r.onresult=e=>document.getElementById("prompt").value+=e.results[0][0].transcript;r.start();
+ const R=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+ if(!R){
+  alert("Voice input is not supported in this browser.");
+  return;
+ }
+
+ const r=new R();
+ const lang=document.getElementById("language").value;
+ r.lang=lang==="English"?"en-US":"ur-PK";
+
+ r.onresult=e=>{
+  document.getElementById("prompt").value+=
+  e.results[0][0].transcript;
+ };
+ r.start();
 }
+
 function copyNotes(){
- let s=document.getElementById("notes").textContent;
- navigator.clipboard?.writeText(s).then(()=>alert("Notes copied")).catch(()=>alert(s));
+ const text=document.getElementById("notes").textContent;
+
+ if(navigator.clipboard){
+  navigator.clipboard.writeText(text)
+   .then(()=>alert("Notes copied"))
+   .catch(()=>alert(text));
+ }else{
+  alert(text);
+ }
 }
+
 function printNotes(){
- let w=window.open("","_blank");if(!w){alert("Allow pop-ups to print.");return}
- w.document.write("<title>Study Notes</title><h2>AI Smart Teacher Notes</h2><pre>"+document.getElementById("notes").textContent+"</pre>");
- w.document.close();w.print();
+ const w=window.open("","_blank");
+ if(!w){
+  alert("Allow pop-ups to print.");
+  return;
+ }
+
+ const notes=document.getElementById("notes").textContent;
+ const safeNotes=notes.replace(/[&<>]/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;"
+ })[c]);
+
+ w.document.write(
+  "<title>Study Notes</title>"+
+  "<h2>Smart AI Teacher Notes</h2>"+
+  "<pre style='white-space:pre-wrap;font-family:Arial'>"+
+  safeNotes+"</pre>"
+ );
+ w.document.close();
+ w.print();
 }
-try{chats=JSON.parse(localStorage.getItem(KEY)||"[]");renderHistory()}catch(e){chats=[]}
+
+try{
+ chats=JSON.parse(localStorage.getItem(KEY)||"[]");
+ if(!Array.isArray(chats))chats=[];
+ renderHistory();
+}catch(e){
+ chats=[];
+}
+
+loadTheme();
 </script>
 </body>
 </html>
